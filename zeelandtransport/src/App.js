@@ -10,9 +10,16 @@ import Navigation from "./Layout/Navigation";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
+  /*Station Lists */
   const [stations, setStations] = useState([]);
-  const [fromStationQuery, setFromStation] = useState("");
-  const [destinationStationQuery, setDestinationStation] = useState("");
+  const [fromStations, setFromStations] = useState([]);
+  const [destinationStations, setDestinationStations] = useState([]);
+  const [fromStationQuery, setFromStationQuery] = useState("");
+  const [destinationStationQuery, setDestinationStationQuery] = useState("");
+
+  /*Station Selection */
+  const [fromStation, setFromStation] = useState();
+  const [destinationStation, setDestinationStation] = useState();
   const [error, setError] = useState("");
 
   useEffect(function () {
@@ -34,6 +41,34 @@ export default function App() {
     fetchData();
   }, []);
 
+  function SearchFromStation(query) {
+    setDestinationStationQuery("");
+    setFromStationQuery(query);
+    setIsLoading(true);
+    let result = [];
+    result = stations.filter(
+      (station) => station.name.includes(query) && [...result, station.name]
+    );
+    setFromStations(result);
+    setIsLoading(false);
+  }
+
+  function SearchDestinationStation(query) {
+    setFromStationQuery("");
+    setDestinationStationQuery(query);
+    setIsLoading(true);
+    let result = [];
+    result = stations.filter(
+      (station) => station.name.includes(query) && [...result, station.name]
+    );
+    setDestinationStations(result);
+    setIsLoading(false);
+  }
+
+  function handleSetFromStation({ station }) {
+    setFromStation(station);
+  }
+
   return (
     <div className="App">
       <BasicLayout>
@@ -43,12 +78,12 @@ export default function App() {
               <input
                 placeholder="Van"
                 type="text"
-                onChange={(e) => setFromStation(e.target.value)}
+                onChange={(e) => SearchFromStation(e.target.value)}
               ></input>
               <input
                 placeholder="Naar"
                 type="text"
-                onChange={(e) => setDestinationStation(e.target.value)}
+                onChange={(e) => SearchDestinationStation(e.target.value)}
               ></input>
             </form>
           </MainCard>
@@ -56,12 +91,24 @@ export default function App() {
         <div>
           {isLoading && <Loader />}
           {error && <ErrorMessage message={error} />}
+          {fromStationQuery.length > 0 && (
+            <Card title={"Vertrek locaties"}>
+              {fromStations.map((station) => (
+                <FilteredDestination station={station} key={fromStations._id} />
+              ))}
+            </Card>
+          )}
 
-          <Card title={"Vertrek locaties"}>
-            {stations.map((station) => (
-              <FilteredDestination station={station} key={station._id} />
-            ))}
-          </Card>
+          {destinationStationQuery.length > 0 && (
+            <Card title={"Aankomst locaties"}>
+              {destinationStations.map((station) => (
+                <FilteredDestination
+                  station={station}
+                  key={destinationStations._id}
+                />
+              ))}
+            </Card>
+          )}
         </div>
       </BasicLayout>
     </div>
