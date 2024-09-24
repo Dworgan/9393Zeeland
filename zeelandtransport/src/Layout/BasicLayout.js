@@ -1,8 +1,11 @@
+import Navigation from "./Navigation";
+
 function BasicLayout({ children }) {
   return (
-    <>
-      <div>test layout</div>;{children};
-    </>
+    <div className="layout">
+      <Navigation />
+      {children}
+    </div>
   );
 }
 
