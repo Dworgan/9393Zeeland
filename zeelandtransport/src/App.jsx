@@ -163,8 +163,8 @@ export default function App() {
           </MainCard>
         </div>
         <div className="display-flex flex-align-items-center">
-          <FilterLocationsresults />;
-          <BookingOptions travelOptions={travelOptions} />
+          <FilterLocationsresults />
+          {/* <BookingOptions travelOptions={travelOptions} /> */}
         </div>
       </BasicLayout>
     </div>
