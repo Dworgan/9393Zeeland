@@ -39,31 +39,31 @@
 }
 
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Light'), url('./fonts/Rubik-Light.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Light"), url("./fonts/Rubik-Light.ttf") format("truetype");
   font-weight: 200;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Regular'),
-    url('./fonts/Rubik-Regular.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Regular"),
+    url("./fonts/Rubik-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-SemiBold'),
-    url('./fonts/Rubik-SemiBold.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-SemiBold"),
+    url("./fonts/Rubik-SemiBold.ttf") format("truetype");
   font-weight: 600;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Bold'), url('./fonts/Rubik-Bold.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Bold"), url("./fonts/Rubik-Bold.ttf") format("truetype");
   font-weight: 900;
 }
 
 body {
   margin: 0;
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-neutral-9);
@@ -105,6 +105,12 @@ h1 {
   transition: 0.3s;
 }
 
+.button.big {
+  padding: 8px;
+  line-height: var(--font-size-xl);
+  font-size: var(--font-size-xl);
+}
+
 .button:hover {
   background-color: var(--color-neutral-0);
   color: var(--color-neutral-8);
@@ -120,8 +126,9 @@ h1 {
 
 .error {
   text-align: center;
-  font-size: 2rem;
-  padding: 4.8rem;
+  font-size: var(--font-size-base);
+  padding: var(--space-l);
+  color: var(--color-neutral-8);
 }
 
 .card {
@@ -132,6 +139,7 @@ h1 {
     var(--border-radius-s);
   padding: var(--space-s);
   box-shadow: var(--card-shadow);
+  flex: 1;
 
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -195,6 +203,33 @@ h1 {
 .icon-container {
   width: 24px;
   height: 24px;
+}
+
+.card .travel-option {
+  display: flex;
+  gap: var(--space-base);
+  align-items: center;
+  background-color: var(--color-neutral-0);
+  color: var(--color-neutral-8);
+  transition: all 0.3s ease-in;
+}
+.card .travel-option:hover {
+  background-color: var(--color-neutral-8);
+  color: var(--color-neutral-0);
+}
+.card .travel-option.selected {
+  background-color: var(--color-neutral-8);
+  color: var(--color-neutral-0);
+}
+
+.card .travel-option .title {
+  color: var(--color-neutral-6);
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+}
+.card .travel-option .details {
+  display: flex;
+  justify-content: space-around;
 }
 
 .form-destination {

@@ -2,12 +2,42 @@ import { Button } from "./Components/Button";
 import { Card, MainCard } from "./Components/Card";
 import { ErrorMessage, InfoMessage } from "./Components/Feedback";
 import Loader from "./Components/Loader";
+import BookingOptions from "./features/Booking/BookingOptions";
 import { FromToIcon, LocationMarker } from "./icons/icons";
 import BasicLayout from "./Layout/BasicLayout";
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from "react";
 
+export const testBooking = [
+  {
+    validUntil: new Date().getDate(),
+    options: [
+      {
+        id: 1, //id van de offer die je hebt gekregen
+        from: {
+          latitude: 5,
+          longitude: 4,
+        },
+        to: {
+          latitude: 7,
+          longitude: 8,
+        },
+        departureTime: "11:30", //Date.toLocaleString - kijk fe demo demo
+        arrivalTime: "11:55", // -||-
+        customer: {
+          id: 1,
+          email: "test@test.nl",
+          firstName: "Test",
+          lastName: "test",
+          phoneNumber: 1234,
+        },
+      },
+    ],
+  },
+];
+
 export default function App() {
+  const [appState, setAppState] = useState("destination");
   const [isLoading, setIsLoading] = useState(false);
   /*Station Lists */
   const [stations, setStations] = useState([]);
@@ -19,13 +49,17 @@ export default function App() {
   const [destinationStations, setDestinationStations] = useState([]);
   const [fromStationQuery, setFromStationQuery] = useState("");
   const [destinationStationQuery, setDestinationStationQuery] = useState("");
-  let currentSelectedFromStation = null;
-  let currentSelectedDestinationStation = null;
+  const [currentFromStation, setCurrentFromStation] = useState(null);
+  const [currentDestinationStation, setCurrentDestinationStation] =
+    useState(null);
 
   const [travelTime, setTravelTime] = useState(new Date().getTime());
 
   /*Station Selection */
   const [error, setError] = useState("");
+
+  /* Travel Options */
+  const [travelOptions, setTravelOptions] = useState(testBooking);
 
   useEffect(function () {
     async function fetchData() {
@@ -45,6 +79,22 @@ export default function App() {
     }
     fetchData();
   }, []);
+
+  async function SetData() {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`http://localhost:8080/stations`, {
+        method: "PUT",
+      });
+      if (!res.ok) throw new Error("egerg");
+      const data = await res.json();
+      if (data.Response === "False") throw new Error("Stations not Found");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   function SearchFromStation(query) {
     setFromStationSuggestions(true);
@@ -75,21 +125,21 @@ export default function App() {
     setFromStationQuery(selectedStation?.name);
     setFromStationSuggestions(false);
     setDestinationStationSuggestions(false);
-    currentSelectedFromStation = selectedStation;
-    console.log(currentSelectedFromStation.longitude);
+    setCurrentFromStation(() => selectedStation);
   }
 
   function handleDestinationStation(selectedStation) {
     setDestinationStationQuery(selectedStation?.name);
     setFromStationSuggestions(false);
     setDestinationStationSuggestions(false);
-    currentSelectedDestinationStation = selectedStation;
+    setCurrentDestinationStation(() => selectedStation);
   }
 
   return (
     <div className="App">
       <BasicLayout>
         <div>
+          <button onClick={SetData}></button>
           <MainCard>
             <form className="form-destination">
               <div>
@@ -112,48 +162,9 @@ export default function App() {
             </form>
           </MainCard>
         </div>
-        <div>
-          {isLoading && <Loader />}
-          {error && <ErrorMessage message={error} />}
-          {showFromStationSuggestions && (
-            <Card title={"Vertrek locaties"}>
-              {fromStations.length === 0 ? (
-                <InfoMessage message={"Geen stations gevonden"} />
-              ) : (
-                fromStations.map((station) => (
-                  <FilteredStation
-                    station={station}
-                    key={fromStations._id}
-                    onClick={() => handleSetFromStation(station)}
-                  />
-                ))
-              )}
-            </Card>
-          )}
-
-          {showDestinationStationSuggestions && (
-            <Card title={"Aankomst locaties"}>
-              {destinationStations.length === 0 ? (
-                <InfoMessage message={"Geen stations gevonden"} />
-              ) : (
-                destinationStations.map((station) => (
-                  <FilteredStation
-                    station={station}
-                    key={destinationStations._id}
-                    onClick={() => handleDestinationStation(station)}
-                  />
-                ))
-              )}
-            </Card>
-          )}
-        </div>
-        <div>
-          {!showDestinationStationSuggestions &
-            !showFromStationSuggestions &
-            (fromStationQuery.length > 0) &
-            (destinationStationQuery.length > 0) && (
-            <Button onClick={() => getTravelOptions()}>Test</Button>
-          )}
+        <div className="display-flex flex-align-items-center">
+          <FilterLocationsresults />
+          {/* <BookingOptions travelOptions={travelOptions} /> */}
         </div>
       </BasicLayout>
     </div>
@@ -172,9 +183,95 @@ export default function App() {
     );
   }
 
+  function FilterLocationsresults() {
+    return (
+      <>
+        {isLoading && <Loader />}
+        {error && <ErrorMessage message={error} key={error} />}
+        {showFromStationSuggestions && (
+          <div>
+            <Card title={"Vertrek locaties"}>
+              {fromStations.length === 0 ? (
+                <InfoMessage message={"Geen stations gevonden"} />
+              ) : (
+                fromStations.map((station) => (
+                  <FilteredStation
+                    station={station}
+                    key={fromStations._id}
+                    onClick={() => handleSetFromStation(station)}
+                  />
+                ))
+              )}
+            </Card>
+          </div>
+        )}
+
+        {showDestinationStationSuggestions && (
+          <div>
+            <Card title={"Aankomst locaties"}>
+              {destinationStations.length === 0 ? (
+                <InfoMessage message={"Geen stations gevonden"} />
+              ) : (
+                destinationStations.map((station) => (
+                  <FilteredStation
+                    station={station}
+                    key={destinationStations._id}
+                    onClick={() => handleDestinationStation(station)}
+                  />
+                ))
+              )}
+            </Card>
+          </div>
+        )}
+
+        {!showDestinationStationSuggestions &
+          !showFromStationSuggestions &
+          (fromStationQuery.length > 0) &
+          (destinationStationQuery.length > 0) && (
+          <Button size={"big"} onClick={() => getTravelOptions()}>
+            Test
+          </Button>
+        )}
+      </>
+    );
+  }
   async function getTravelOptions() {
+    setTravelTime(() => new Date().getTime());
+    var x = JSON.stringify({
+      from: {
+        latitude: currentFromStation.latitude,
+        longitude: currentFromStation.longitude,
+        stopReferences: [],
+      },
+      to: {
+        latitude: currentDestinationStation.latitude,
+        longitude: currentDestinationStation.longitude,
+        stopReferences: [],
+      },
+      travelers: 1,
+      abilities: [],
+      customer: {
+        id: "12345",
+        email: "johndoe@example.com",
+        firstName: "John",
+        lastName: "Doe",
+        phoneNumber: "+1234567890",
+      },
+      departureTime: travelTime.toLocaleString("en-US", {
+        timeZone: "Europe/Amsterdam",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }),
+      transportationModes: [],
+    });
+    console.log(x);
+
+    console.log(currentFromStation);
     try {
-      setTravelTime(() => new Date().getTime());
       setIsLoading(true);
       const url = "http://localhost:8080/planning/offers";
       const res = await fetch(url, {
@@ -182,33 +279,50 @@ export default function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          from: {
-            latitude: currentSelectedFromStation.latitude,
-            longitude: currentSelectedFromStation.longitude,
-            stopReferences: [],
-          },
-          to: {
-            latitude: currentSelectedDestinationStation.latitude,
-            longitude: currentSelectedDestinationStation.longitude,
-            stopReferences: [],
-          },
-          travelers: 1,
-          abilities: [],
-          customer: {
-            id: "12345",
-            email: "johndoe@example.com",
-            firstName: "John",
-            lastName: "Doe",
-            phoneNumber: "+1234567890",
-          },
-          departureTime: travelTime,
-          transportationModes: [],
-        }),
+        body: x,
       });
 
-      if (!res.ok)
-        throw new Error("Helaas konden er geen stations ingeladen worden");
+      if (!res.ok) throw new Error("Er zijn geen reis opties gevonden");
+      const data = await res.json();
+      if (data.Response === "False")
+        throw new Error("Er zijn geen reis opties gevonden");
+      console.log("got data " + data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function setBooking() {
+    var b = {
+      id: "794c9d63-5992-41a2-8885-08dcd7d31bbc",
+      from: {
+        latitude: 51.493202,
+        longitude: 3.616107,
+        stopReferences: [],
+      },
+      to: {
+        latitude: 51.49044,
+        longitude: 3.630872,
+        stopReferences: [],
+      },
+      departureTime: "2024-09-18T15:30:00+02:00",
+      arrivalTime: "2024-09-18T15:34:48+02:00",
+      customer: null,
+    };
+    try {
+      setIsLoading(true);
+      const url = "http://localhost:8080/planning/offers";
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: x,
+      });
+
+      if (!res.ok) throw new Error("Er zijn geen reis opties gevonden");
       const data = await res.json();
       if (data.Response === "False")
         throw new Error("Er zijn geen reis opties gevonden");
