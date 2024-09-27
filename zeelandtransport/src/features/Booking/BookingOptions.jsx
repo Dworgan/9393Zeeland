@@ -1,14 +1,26 @@
+import { useState } from "react";
+import { Button } from "../../Components/Button";
 import { Card } from "../../Components/Card";
 import { TravelIcon } from "../../icons/icons";
 
-export default function BookingOptions({ travelOptions }) {
+export default function BookingOptions({
+  travelOptions,
+  selectedTravelOption,
+  handleSelectTravelOption,
+}) {
   return (
     <>
       <Card title={"Reis Opties"}>
         {travelOptions.length === 0 && "Er zijn geen reisopties beschikbaar."}
         {travelOptions.length > 0 &&
           travelOptions.map((travelOption) => (
-            <div className="travel-option">
+            <div
+              className={
+                "travel-option " +
+                (travelOption === selectedTravelOption ? "selected" : "")
+              }
+              onClick={() => handleSelectTravelOption()}
+            >
               <div>
                 <TravelIcon />
               </div>
@@ -28,7 +40,6 @@ export default function BookingOptions({ travelOptions }) {
               </div>
             </div>
           ))}
-        <testCmp />
       </Card>
     </>
   );

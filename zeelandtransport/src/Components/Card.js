@@ -1,6 +1,11 @@
-export function Card({ title, children }) {
+export function Card({ title, children, alignTop = true }) {
   return (
-    <div className="card">
+    <div
+      className={
+        "card " +
+        (alignTop ? " flex-align-self-baseline " : "flex-align-self-center")
+      }
+    >
       <div className="card-title">{title}</div>
       <div className="card-view">{children}</div>
     </div>
@@ -9,7 +14,7 @@ export function Card({ title, children }) {
 
 export function MainCard({ children }) {
   return (
-    <div className="card main">
+    <div className="card main ">
       <div className="card-view">{children}</div>
     </div>
   );

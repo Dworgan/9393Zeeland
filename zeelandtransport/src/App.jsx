@@ -13,24 +13,20 @@ export const testBooking = [
     validUntil: new Date().getDate(),
     options: [
       {
-        id: 1, //id van de offer die je hebt gekregen
+        id: "794c9d63-5992-41a2-8885-08dcd7d31bbc",
         from: {
-          latitude: 5,
-          longitude: 4,
+          latitude: 51.493202,
+          longitude: 3.616107,
+          stopReferences: [],
         },
         to: {
-          latitude: 7,
-          longitude: 8,
+          latitude: 51.49044,
+          longitude: 3.630872,
+          stopReferences: [],
         },
-        departureTime: "11:30", //Date.toLocaleString - kijk fe demo demo
-        arrivalTime: "11:55", // -||-
-        customer: {
-          id: 1,
-          email: "test@test.nl",
-          firstName: "Test",
-          lastName: "test",
-          phoneNumber: 1234,
-        },
+        departureTime: "2024-09-18T15:30:00+02:00",
+        arrivalTime: "2024-09-18T15:34:48+02:00",
+        customer: null,
       },
     ],
   },
@@ -60,6 +56,7 @@ export default function App() {
 
   /* Travel Options */
   const [travelOptions, setTravelOptions] = useState(testBooking);
+  const [currentTravelOption, setCurrentTravelOption] = useState(null);
 
   useEffect(function () {
     async function fetchData() {
@@ -135,11 +132,13 @@ export default function App() {
     setCurrentDestinationStation(() => selectedStation);
   }
 
+  function handleSelectTravelOption(selectedTraveloption) {
+    setCurrentTravelOption(selectedTraveloption);
+  }
   return (
     <div className="App">
       <BasicLayout>
         <div>
-          <button onClick={SetData}></button>
           <MainCard>
             <form className="form-destination">
               <div>
@@ -163,9 +162,36 @@ export default function App() {
           </MainCard>
         </div>
         <div className="display-flex flex-align-items-center">
-          <FilterLocationsresults />
-          {/* <BookingOptions travelOptions={travelOptions} /> */}
+          {appState === "destination" && <FilterLocationsresults />}
+          {appState === "traveloptions" && (
+            <BookingOptions
+              travelOptions={travelOptions}
+              selectedTravelOption={currentTravelOption}
+              handleSelectTravelOption={handleSelectTravelOption}
+            />
+          )}
         </div>
+        <>
+          {!showDestinationStationSuggestions &
+          !showFromStationSuggestions &
+          !isLoading &
+          (appState === "destination") &
+          ((fromStationQuery.length > 0) &
+            (destinationStationQuery.length > 0)) ? (
+            <div className="button-container">
+              <Button size={"big"} onClick={() => getTravelOptions()}>
+                Plan
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
+          {currentTravelOption !== null && (
+            <div className="button-container">
+              <Button size={"big"}>Book</Button>
+            </div>
+          )}
+        </>
       </BasicLayout>
     </div>
   );
@@ -189,54 +215,51 @@ export default function App() {
         {isLoading && <Loader />}
         {error && <ErrorMessage message={error} key={error} />}
         {showFromStationSuggestions && (
-          <div>
-            <Card title={"Vertrek locaties"}>
-              {fromStations.length === 0 ? (
-                <InfoMessage message={"Geen stations gevonden"} />
-              ) : (
-                fromStations.map((station) => (
-                  <FilteredStation
-                    station={station}
-                    key={fromStations._id}
-                    onClick={() => handleSetFromStation(station)}
-                  />
-                ))
-              )}
-            </Card>
-          </div>
+          <Card title={"Vertrek locaties"}>
+            {fromStations.length === 0 ? (
+              <InfoMessage message={"Geen stations gevonden"} />
+            ) : (
+              fromStations.map((station) => (
+                <FilteredStation
+                  station={station}
+                  key={fromStations._id}
+                  onClick={() => handleSetFromStation(station)}
+                />
+              ))
+            )}
+          </Card>
         )}
 
         {showDestinationStationSuggestions && (
-          <div>
-            <Card title={"Aankomst locaties"}>
-              {destinationStations.length === 0 ? (
-                <InfoMessage message={"Geen stations gevonden"} />
-              ) : (
-                destinationStations.map((station) => (
-                  <FilteredStation
-                    station={station}
-                    key={destinationStations._id}
-                    onClick={() => handleDestinationStation(station)}
-                  />
-                ))
-              )}
-            </Card>
-          </div>
-        )}
-
-        {!showDestinationStationSuggestions &
-          !showFromStationSuggestions &
-          (fromStationQuery.length > 0) &
-          (destinationStationQuery.length > 0) && (
-          <Button size={"big"} onClick={() => getTravelOptions()}>
-            Test
-          </Button>
+          <Card title={"Aankomst locaties"}>
+            {destinationStations.length === 0 ? (
+              <InfoMessage message={"Geen stations gevonden"} />
+            ) : (
+              destinationStations.map((station) => (
+                <FilteredStation
+                  station={station}
+                  key={destinationStations._id}
+                  onClick={() => handleDestinationStation(station)}
+                />
+              ))
+            )}
+          </Card>
         )}
       </>
     );
   }
   async function getTravelOptions() {
-    setTravelTime(() => new Date().getTime());
+    setTravelTime(() =>
+      new Date().getTime().toLocaleString("en-US", {
+        timeZone: "Europe/Amsterdam",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+    );
     var x = JSON.stringify({
       from: {
         latitude: currentFromStation.latitude,
@@ -257,15 +280,6 @@ export default function App() {
         lastName: "Doe",
         phoneNumber: "+1234567890",
       },
-      departureTime: travelTime.toLocaleString("en-US", {
-        timeZone: "Europe/Amsterdam",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
       transportationModes: [],
     });
     console.log(x);
@@ -286,11 +300,13 @@ export default function App() {
       const data = await res.json();
       if (data.Response === "False")
         throw new Error("Er zijn geen reis opties gevonden");
-      console.log("got data " + data);
+      console.log(data);
+      //setTravelOptions(data);
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
+      setAppState("traveloptions");
     }
   }
 
@@ -319,14 +335,13 @@ export default function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: x,
+        body: b,
       });
 
-      if (!res.ok) throw new Error("Er zijn geen reis opties gevonden");
+      if (!res.ok) throw new Error("Booking is niet gelukt");
       const data = await res.json();
-      if (data.Response === "False")
-        throw new Error("Er zijn geen reis opties gevonden");
-      console.log("got data " + data);
+      if (data.Response === "False") throw new Error("Booking is niet gelukt");
+      console.log(data);
     } catch (err) {
       setError(err.message);
     } finally {
