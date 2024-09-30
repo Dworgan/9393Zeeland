@@ -1,10 +1,11 @@
-import { Button } from "./Components/Button";
-import { Card, MainCard } from "./Components/Card";
-import { ErrorMessage, InfoMessage } from "./Components/Feedback";
-import Loader from "./Components/Loader";
+import { Button } from "./components/Button";
+import { Card, MainCard } from "./components/Card";
+import { ErrorMessage, InfoMessage } from "./components/Feedback";
+import Loader from "./components/Loader";
 import BookingOptions from "./features/Booking/BookingOptions";
+import PlanDestination from "./features/LocationSelection/PlanDestination";
 import { FromToIcon, LocationMarker } from "./icons/icons";
-import BasicLayout from "./Layout/BasicLayout";
+import BasicLayout from "./layout/BasicLayout";
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from "react";
 
@@ -55,8 +56,11 @@ export default function App() {
   const [error, setError] = useState("");
 
   /* Travel Options */
-  const [travelOptions, setTravelOptions] = useState(testBooking);
+  const [travelOptions, setTravelOptions] = useState();
   const [currentTravelOption, setCurrentTravelOption] = useState(null);
+
+  /* Booking Info */
+  const [travelBooking, setTravelBooking] = useState();
 
   useEffect(function () {
     async function fetchData() {
@@ -76,22 +80,6 @@ export default function App() {
     }
     fetchData();
   }, []);
-
-  async function SetData() {
-    try {
-      setIsLoading(true);
-      const res = await fetch(`http://localhost:8080/stations`, {
-        method: "PUT",
-      });
-      if (!res.ok) throw new Error("egerg");
-      const data = await res.json();
-      if (data.Response === "False") throw new Error("Stations not Found");
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   function SearchFromStation(query) {
     setFromStationSuggestions(true);
@@ -138,29 +126,27 @@ export default function App() {
   return (
     <div className="App">
       <BasicLayout>
-        <div>
-          <MainCard>
-            <form className="form-destination">
-              <div>
-                <FromToIcon />
-              </div>
-              <div className="flex1 display-flex flex-direction-column">
-                <input
-                  placeholder="Van"
-                  type="text"
-                  value={fromStationQuery}
-                  onChange={(e) => SearchFromStation(e.target.value)}
-                ></input>
-                <input
-                  placeholder="Naar"
-                  type="text"
-                  value={destinationStationQuery}
-                  onChange={(e) => SearchDestinationStation(e.target.value)}
-                ></input>
-              </div>
-            </form>
-          </MainCard>
-        </div>
+        <PlanDestination
+          fromStationQuery={fromStationQuery}
+          destinationStationQuery={destinationStationQuery}
+          onHandleSearchFrom={(e) => SearchFromStation(e.target.value)}
+          onHandleSearchDestination={(e) =>
+            SearchDestinationStation(e.target.value)
+          }
+        />
+
+        {(() => {
+          switch (appState) {
+            case "destination":
+              return;
+            case "booking":
+              return <DisplayBookedInfo />;
+
+            default:
+              return null;
+          }
+        })()}
+
         <div className="display-flex flex-align-items-center">
           {appState === "destination" && <FilterLocationsresults />}
           {appState === "traveloptions" && (
@@ -188,7 +174,9 @@ export default function App() {
           )}
           {currentTravelOption !== null && (
             <div className="button-container">
-              <Button size={"big"}>Book</Button>
+              <Button size={"big"} onClick={() => setBooking()}>
+                Book
+              </Button>
             </div>
           )}
         </>
@@ -248,7 +236,20 @@ export default function App() {
       </>
     );
   }
+
+  function DisplayBookedInfo() {
+    return (
+      <MainCard title={""}>
+        <div>
+          <h1>Booking</h1>
+          <h4>{travelBooking?.departureTime}</h4>
+        </div>
+      </MainCard>
+    );
+  }
+
   async function getTravelOptions() {
+    setAppState("planbooking");
     setTravelTime(() =>
       new Date().getTime().toLocaleString("en-US", {
         timeZone: "Europe/Amsterdam",
@@ -301,7 +302,7 @@ export default function App() {
       if (data.Response === "False")
         throw new Error("Er zijn geen reis opties gevonden");
       console.log(data);
-      //setTravelOptions(data);
+      setTravelOptions(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -312,40 +313,67 @@ export default function App() {
 
   async function setBooking() {
     var b = {
-      id: "794c9d63-5992-41a2-8885-08dcd7d31bbc",
+      id: "df5a2387-2a97-4286-d419-08dcdee6d1c3",
       from: {
-        latitude: 51.493202,
-        longitude: 3.616107,
+        latitude: 51.330444,
+        longitude: 3.498376,
         stopReferences: [],
       },
       to: {
-        latitude: 51.49044,
-        longitude: 3.630872,
+        latitude: 51.396683,
+        longitude: 3.551355,
         stopReferences: [],
       },
-      departureTime: "2024-09-18T15:30:00+02:00",
-      arrivalTime: "2024-09-18T15:34:48+02:00",
+      departureTime: "2024-09-27T15:00:00+02:00",
+      arrivalTime: "2024-09-27T15:19:08+02:00",
       customer: null,
     };
     try {
       setIsLoading(true);
-      const url = "http://localhost:8080/planning/offers";
+      const url = "http://localhost:8080/bookings";
       const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: b,
+        body: JSON.stringify(b),
       });
 
       if (!res.ok) throw new Error("Booking is niet gelukt");
       const data = await res.json();
       if (data.Response === "False") throw new Error("Booking is niet gelukt");
       console.log(data);
+      confirmBooking(data.id);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      // setIsLoading(false);
+    }
+  }
+  async function confirmBooking(id) {
+    try {
+      const url = `http://localhost:8080/bookings/${id}/events`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          operation: "COMMIT",
+          origin: "TO",
+        }),
+      });
+      if (!res.ok) throw new Error("Booking is niet bevestigt");
+      const data = await res.json();
+      console.log("Booking success");
+      if (data.Response === "False")
+        throw new Error("Booking is niet bevestigt");
+      setTravelBooking(data);
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
     }
+    setAppState("booking");
   }
 }

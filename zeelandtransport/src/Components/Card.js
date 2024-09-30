@@ -6,7 +6,7 @@ export function Card({ title, children, alignTop = true }) {
         (alignTop ? " flex-align-self-baseline " : "flex-align-self-center")
       }
     >
-      <div className="card-title">{title}</div>
+      {title !== "" && <div className="card-title">{title}</div>}
       <div className="card-view">{children}</div>
     </div>
   );
