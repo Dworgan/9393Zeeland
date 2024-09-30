@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button } from "../../Components/Button";
-import { Card } from "../../Components/Card";
+import { Button } from "../../components/Button";
+import { Card } from "../../components/Card";
 import { TravelIcon } from "../../icons/icons";
 
 export default function BookingOptions({
@@ -11,15 +11,16 @@ export default function BookingOptions({
   return (
     <>
       <Card title={"Reis Opties"}>
-        {travelOptions.length === 0 && "Er zijn geen reisopties beschikbaar."}
-        {travelOptions.length > 0 &&
-          travelOptions.map((travelOption) => (
+        {travelOptions.options.length === 0 &&
+          "Er zijn geen reisopties beschikbaar."}
+        {travelOptions.options.length > 0 &&
+          travelOptions.options.map((travelOption) => (
             <div
               className={
                 "travel-option " +
                 (travelOption === selectedTravelOption ? "selected" : "")
               }
-              onClick={() => handleSelectTravelOption()}
+              onClick={() => handleSelectTravelOption(travelOption)}
             >
               <div>
                 <TravelIcon />
@@ -27,11 +28,11 @@ export default function BookingOptions({
               <div className="flex1 details">
                 <div>
                   <div className="title">Vertrek </div>
-                  <div>00:00</div>
+                  <div>{travelOption.departureTime}</div>
                 </div>
                 <div>
                   <div className="title">Aankomst</div>
-                  <div>00:00</div>
+                  <div>{travelOption.arrivalTime}</div>
                 </div>
                 <div>
                   <div className="title">Prijs</div>
