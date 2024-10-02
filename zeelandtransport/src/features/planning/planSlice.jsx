@@ -1,10 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+/*
+  planning state:
+  empty
+  planFrom
+  planTo
+  planFilter
+  planDone
+*/
+
+const station = {
+  _id: -1,
+  name: '',
+};
+
 const initialState = {
+  listOfStation: [],
+  planningState: '',
   fromStationQuery: '',
-  fromStation: '',
+  fromStation: station,
+  fromStationsList: [],
   toStationQuery: '',
-  toStation: '',
+  toStation: station,
+  toStationsList: [],
+
   time: new Date().toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
@@ -15,52 +34,60 @@ const planSlice = createSlice({
   name: 'planning',
   initialState,
   reducers: {
+    setListOfStations(state, action) {
+      state.listOfStation = action.payload;
+    },
     setFromQuery: (state, action) => {
-      console.log(state.fromStationQuery + '   ' + action.payload);
       state.fromStationQuery = action.payload;
-      console.log(state.fromStationQuery + '   ' + action.payload);
+      state.planningState = 'planFrom';
+      let result = [];
+      result = state.listOfStation.filter(
+        (station) =>
+          station.name.includes(state.fromStationQuery) && [
+            ...result,
+            station.name,
+          ]
+      );
+      state.fromStationsList = result;
     },
     setFromStation(state, action) {
       state.fromStation = action.payload;
+      state.fromStationQuery = state.fromStation.name;
+      state.planningState = '';
+      state.toStation !== null && (state.planningState = 'planFilter');
     },
     setToQuery(state, action) {
       state.toStationQuery = action.payload;
+      state.planningState = 'planTo';
+      let result = [];
+      result = state.listOfStation.filter(
+        (station) =>
+          station.name.includes(state.toStationQuery) && [
+            ...result,
+            station.name,
+          ]
+      );
+      state.toStationsList = result;
     },
     setToStation(state, action) {
       state.toStation = action.payload;
+      state.toStationQuery = state.toStation.name;
+      state.planningState = '';
+
+      state.fromStation !== null && (state.planningState = 'planFilter');
+    },
+    setPlanningState(state, action) {
+      state.planningState = action.payload;
     },
   },
 });
-console.log(planSlice);
 
-export const { setFromQuery, setFromStation, setToQuery, setToStation } =
-  planSlice.actions;
+export const {
+  setListOfStations,
+  setFromQuery,
+  setFromStation,
+  setToQuery,
+  setToStation,
+} = planSlice.actions;
 
 export default planSlice.reducer;
-/*
-export default function planReducer(state = initialPlanState, action) {
-  switch (action.type) {
-    case "plan/setFromQuery":
-      return { ...state, fromStationQuery: action.payload };
-    case "plan/setFromStation":
-      return { ...state, fromStation: action.payload };
-    case "plan/setToQuery":
-      return { ...state, toStation: action.payload };
-    case "plan/setToStation":
-      return { ...state, toStation: action.payload };
-    default:
-      return state;
-  }
-}
-
-export function setFromQuery(query) {
-  return { type: "plan/setFromQuery", payload: query };
-}
-export function setFromStation(station) {
-  return { type: "plan/setFromStation", payload: station };
-}
-
-export function setToQuery(query) {
-  return { type: "plan/setToQuery", payload: query };
-}
-*/

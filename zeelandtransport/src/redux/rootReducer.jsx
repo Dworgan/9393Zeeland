@@ -6,5 +6,6 @@ const mainStore = configureStore({
     plan: planReducer,
   },
 });
+//mainStore.dispatch(planReducer.setFromQuery('test'));
 
 export default mainStore;

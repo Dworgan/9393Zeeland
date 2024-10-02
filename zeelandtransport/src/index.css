@@ -39,31 +39,31 @@
 }
 
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-Light"), url("./fonts/Rubik-Light.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-Light'), url('./fonts/Rubik-Light.ttf') format('truetype');
   font-weight: 200;
 }
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-Regular"),
-    url("./fonts/Rubik-Regular.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-Regular'),
+    url('./fonts/Rubik-Regular.ttf') format('truetype');
   font-weight: 400;
 }
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-SemiBold"),
-    url("./fonts/Rubik-SemiBold.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-SemiBold'),
+    url('./fonts/Rubik-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-Bold"), url("./fonts/Rubik-Bold.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-Bold'), url('./fonts/Rubik-Bold.ttf') format('truetype');
   font-weight: 900;
 }
 
 body {
   margin: 0;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-neutral-9);
@@ -120,6 +120,11 @@ h1 {
   font-size: var(--font-size-xl);
   height: 120px;
   width: 120px;
+}
+.button.small {
+  line-height: var(--font-size-xl);
+  font-size: var(--font-size-xl);
+  height: 40px;
 }
 
 .button:hover {

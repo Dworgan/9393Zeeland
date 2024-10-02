@@ -1,18 +1,8 @@
-import { Button } from './components/Button';
 import { Card, MainCard } from './components/Card';
-import { ErrorMessage, InfoMessage } from './components/Feedback';
-import { Filter, TravelFilter } from './components/travelfilter';
-import Loader from './components/Loader';
-import BookingOptions from './features/Booking/BookingOptions';
-import { FromToIcon, LocationMarker } from './icons/icons';
 import BasicLayout from './layout/BasicLayout';
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from 'react';
-import { DatePicker } from './components/datepicker';
-import { TravelTime } from './components/traveltime';
 import PlanDestination from './features/planning/PlanDestination';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFromQuery } from './features/planning/planSlice';
 
 export const testBooking = [
   {
@@ -41,9 +31,9 @@ export const testBooking = [
 export default function App() {
   const [appState, setAppState] = useState('destination');
   const [destinationState, setDestinationState] = useState('planning');
-  const [isLoading, setIsLoading] = useState(false);
+
   /*Station Lists */
-  const [stations, setStations] = useState([]);
+
   const [showFromStationSuggestions, setFromStationSuggestions] =
     useState(false);
   const [showDestinationStationSuggestions, setDestinationStationSuggestions] =
@@ -59,7 +49,6 @@ export default function App() {
   const [travelTime, setTravelTime] = useState(new Date().getTime());
 
   /*Station Selection */
-  const [error, setError] = useState('');
 
   /* Travel Options */
   const [travelOptions, setTravelOptions] = useState();
@@ -68,48 +57,29 @@ export default function App() {
   /* Booking Info */
   const [travelBooking, setTravelBooking] = useState();
 
-  useEffect(function () {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`http://localhost:8080/stations`);
-        if (!res.ok)
-          throw new Error('Helaas konden er geen stations ingeladen worden');
-        const data = await res.json();
-        if (data.Response === 'False') throw new Error('Stations not Found');
-        setStations(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-
   function SearchFromStation(query) {
     setFromStationSuggestions(true);
     setDestinationStationSuggestions(false);
     setFromStationQuery(query);
-    setIsLoading(true);
-    let result = [];
-    result = stations.filter(
-      (station) => station.name.includes(query) && [...result, station.name]
-    );
-    setFromStations(result);
-    setIsLoading(false);
+    // setIsLoading(true);
+    // let result = [];
+    // result = stations.filter(
+    //   (station) => station.name.includes(query) && [...result, station.name]
+    // );
+    //  setFromStations(result);
+    // setIsLoading(false);
   }
 
   function SearchDestinationStation(query) {
     setDestinationStationQuery(query);
     setDestinationStationSuggestions(true);
-    setIsLoading(true);
-    let result = [];
-    result = stations.filter(
-      (station) => station.name.includes(query) && [...result, station.name]
-    );
-    setDestinationStations(result);
-    setIsLoading(false);
+    // setIsLoading(true);
+    // let result = [];
+    // result = stations.filter(
+    //   (station) => station.name.includes(query) && [...result, station.name]
+    // );
+    //setDestinationStations(result);
+    // setIsLoading(false);
   }
 
   function handleSetFromStation(selectedStation) {
@@ -129,13 +99,7 @@ export default function App() {
   function handleSelectTravelOption(selectedTraveloption) {
     setCurrentTravelOption(selectedTraveloption);
   }
-  const planning = useSelector((rootStore) => rootStore.plan.fromStationQuery);
-  const dispatch = useDispatch();
-  function searchFromStation(query) {
-    //setFromStationQuery(query);
-    console.log(query);
-    dispatch(setFromQuery(query));
-  }
+
   return (
     <div className='App'>
       <BasicLayout>
@@ -143,59 +107,6 @@ export default function App() {
       </BasicLayout>
     </div>
   );
-
-  function FilteredStation({ station, onClick }) {
-    return (
-      <div className='content' onClick={onClick}>
-        <div>
-          <LocationMarker />
-        </div>
-        <div className='flex1'>
-          {station.name + '  ' + (station.city !== null ? station.city : '')}{' '}
-        </div>
-      </div>
-    );
-  }
-
-  function FilterLocationsresults() {
-    return (
-      <>
-        {isLoading && <Loader />}
-        {error && <ErrorMessage message={error} key={error} />}
-        {showFromStationSuggestions && (
-          <Card title={'Vertrek locaties'}>
-            {fromStations.length === 0 ? (
-              <InfoMessage message={'Geen stations gevonden'} />
-            ) : (
-              fromStations.map((station) => (
-                <FilteredStation
-                  station={station}
-                  key={fromStations._id}
-                  onClick={() => handleSetFromStation(station)}
-                />
-              ))
-            )}
-          </Card>
-        )}
-
-        {showDestinationStationSuggestions && (
-          <Card title={'Aankomst locaties'}>
-            {destinationStations.length === 0 ? (
-              <InfoMessage message={'Geen stations gevonden'} />
-            ) : (
-              destinationStations.map((station) => (
-                <FilteredStation
-                  station={station}
-                  key={destinationStations._id}
-                  onClick={() => handleDestinationStation(station)}
-                />
-              ))
-            )}
-          </Card>
-        )}
-      </>
-    );
-  }
 
   function DisplayBookedInfo() {
     return (
@@ -246,7 +157,7 @@ export default function App() {
 
     console.log(currentFromStation);
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const url = 'http://localhost:8080/planning/offers';
       const res = await fetch(url, {
         method: 'POST',
@@ -263,9 +174,9 @@ export default function App() {
       console.log(data);
       setTravelOptions(data);
     } catch (err) {
-      setError(err.message);
+      //setError(err.message);
     } finally {
-      setIsLoading(false);
+      //setIsLoading(false);
       setDestinationState('traveloptions');
     }
   }
@@ -288,7 +199,7 @@ export default function App() {
       customer: null,
     };
     try {
-      setIsLoading(true);
+      //setIsLoading(true);
       const url = 'http://localhost:8080/bookings';
       const res = await fetch(url, {
         method: 'POST',
@@ -304,7 +215,7 @@ export default function App() {
       console.log(data);
       confirmBooking(data.id);
     } catch (err) {
-      setError(err.message);
+      //setError(err.message);
     } finally {
       // setIsLoading(false);
     }
@@ -329,9 +240,9 @@ export default function App() {
         throw new Error('Booking is niet bevestigt');
       setTravelBooking(data);
     } catch (err) {
-      setError(err.message);
+      //setError(err.message);
     } finally {
-      setIsLoading(false);
+      //setIsLoading(false);
     }
     setAppState('bookingconfirmed');
   }
