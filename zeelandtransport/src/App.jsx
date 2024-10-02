@@ -1,13 +1,16 @@
 import { Button } from "./components/Button";
 import { Card, MainCard } from "./components/Card";
 import { ErrorMessage, InfoMessage } from "./components/Feedback";
+import { Filter, TravelFilter } from "./components/travelfilter";
 import Loader from "./components/Loader";
 import BookingOptions from "./features/Booking/BookingOptions";
-import PlanDestination from "./features/LocationSelection/PlanDestination";
 import { FromToIcon, LocationMarker } from "./icons/icons";
 import BasicLayout from "./layout/BasicLayout";
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from "react";
+import { DatePicker } from "./components/datepicker";
+import { TravelTime } from "./components/traveltime";
+import PlanDestination from "./features/planning/PlanDestination";
 
 export const testBooking = [
   {
@@ -35,6 +38,7 @@ export const testBooking = [
 
 export default function App() {
   const [appState, setAppState] = useState("destination");
+  const [destinationState, setDestinationState] = useState("planning");
   const [isLoading, setIsLoading] = useState(false);
   /*Station Lists */
   const [stations, setStations] = useState([]);
@@ -126,60 +130,7 @@ export default function App() {
   return (
     <div className="App">
       <BasicLayout>
-        <PlanDestination
-          fromStationQuery={fromStationQuery}
-          destinationStationQuery={destinationStationQuery}
-          onHandleSearchFrom={(e) => SearchFromStation(e.target.value)}
-          onHandleSearchDestination={(e) =>
-            SearchDestinationStation(e.target.value)
-          }
-        />
-
-        {(() => {
-          switch (appState) {
-            case "destination":
-              return;
-            case "booking":
-              return <DisplayBookedInfo />;
-
-            default:
-              return null;
-          }
-        })()}
-
-        <div className="display-flex flex-align-items-center">
-          {appState === "destination" && <FilterLocationsresults />}
-          {appState === "traveloptions" && (
-            <BookingOptions
-              travelOptions={travelOptions}
-              selectedTravelOption={currentTravelOption}
-              handleSelectTravelOption={handleSelectTravelOption}
-            />
-          )}
-        </div>
-        <>
-          {!showDestinationStationSuggestions &
-          !showFromStationSuggestions &
-          !isLoading &
-          (appState === "destination") &
-          ((fromStationQuery.length > 0) &
-            (destinationStationQuery.length > 0)) ? (
-            <div className="button-container">
-              <Button size={"big"} onClick={() => getTravelOptions()}>
-                Plan
-              </Button>
-            </div>
-          ) : (
-            ""
-          )}
-          {currentTravelOption !== null && (
-            <div className="button-container">
-              <Button size={"big"} onClick={() => setBooking()}>
-                Book
-              </Button>
-            </div>
-          )}
-        </>
+        <PlanDestination />
       </BasicLayout>
     </div>
   );
@@ -249,7 +200,6 @@ export default function App() {
   }
 
   async function getTravelOptions() {
-    setAppState("planbooking");
     setTravelTime(() =>
       new Date().getTime().toLocaleString("en-US", {
         timeZone: "Europe/Amsterdam",
@@ -307,7 +257,7 @@ export default function App() {
       setError(err.message);
     } finally {
       setIsLoading(false);
-      setAppState("traveloptions");
+      setDestinationState("traveloptions");
     }
   }
 
@@ -374,6 +324,52 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-    setAppState("booking");
+    setAppState("bookingconfirmed");
   }
 }
+
+/* {(() => {
+          switch (appState) {
+            case "destination":
+              return ;
+            case "bookingconfirmed":
+              return <DisplayBookedInfo />;
+
+            default:
+              return null;
+          }
+        })()}
+
+        <div className="display-flex flex-align-items-center">
+          {appState === "destination" && <FilterLocationsresults />}
+          {appState === "traveloptions" && (
+            <BookingOptions
+              travelOptions={travelOptions}
+              selectedTravelOption={currentTravelOption}
+              handleSelectTravelOption={handleSelectTravelOption}
+            />
+          )}
+        </div>
+        <>
+          {!showDestinationStationSuggestions &
+          !showFromStationSuggestions &
+          !isLoading &
+          (destinationState === "planning") &
+          ((fromStationQuery.length > 0) &
+            (destinationStationQuery.length > 0)) ? (
+            <div className="button-container">
+              <Button size={"big"} onClick={() => getTravelOptions()}>
+                Plan
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
+          {currentTravelOption !== null && (
+            <div className="button-container">
+              <Button size={"big"} onClick={() => setBooking()}>
+                Book
+              </Button>
+            </div>
+          )}
+        </> */
