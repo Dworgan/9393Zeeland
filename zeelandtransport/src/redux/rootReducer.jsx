@@ -1,9 +1,10 @@
-import { combineReducers, createStore } from "redux";
-import planReducer from "../features/planning/planSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import planReducer from '../features/planning/planSlice';
 
-const rootReducer = combineReducers({
-  plan: planReducer,
+const mainStore = configureStore({
+  reducer: {
+    plan: planReducer,
+  },
 });
-const rootStore = createStore(rootReducer);
 
-export default rootStore;
+export default mainStore;
