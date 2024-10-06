@@ -12,9 +12,9 @@ export function Card({ title, children, alignTop = true }) {
   );
 }
 
-export function MainCard({ children }) {
+export function MainCard({ children, handleOnClick }) {
   return (
-    <div className="card main ">
+    <div className="card main " onClick={handleOnClick}>
       <div className="card-view">{children}</div>
     </div>
   );

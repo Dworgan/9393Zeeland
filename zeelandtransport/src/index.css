@@ -1,9 +1,11 @@
 :root {
-  --font-size-xl: 1.5rem; /*24px*/
+  --font-size-xl: 2.5rem; /*24px*/
   --font-size-m: 1.5rem; /*24px*/
   --font-size-base: 1rem; /*16px*/
   --font-size-s: 0.75rem; /*12px*/
   --font-size-xs: 0.5rem; /*8px*/
+
+  --line-height-xl: 2.5rem; /*24px*/
 
   --line-height-m: 1.5rem; /*24px*/
   --line-height-base: 1rem; /*16px*/
@@ -22,7 +24,17 @@
   --color-neutral-9: #272b30;
   --color-neutral-10: #101213;
 
-  --color-primary: var(--color-neutral-8);
+  --color-primary-140: #fca311;
+  --color-primary-120: #e38e03;
+  --color-primary: #fca311;
+  --color-primary-80: #fdbb4f;
+  --color-primary-60: #fdce81;
+  --color-primary-40: #fee2b3;
+  --color-primary-20: #fff5e6;
+
+  --color-secondary: #14213d;
+
+  --background-color: var(--color-neutral-8);
 
   --space-xs: 0.25rem; /*4px*/
   --space-s: 0.5rem; /*8px*/
@@ -39,40 +51,51 @@
 }
 
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Light'), url('./fonts/Rubik-Light.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Light"), url("./fonts/Rubik-Light.ttf") format("truetype");
   font-weight: 200;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Regular'),
-    url('./fonts/Rubik-Regular.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Regular"),
+    url("./fonts/Rubik-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-SemiBold'),
-    url('./fonts/Rubik-SemiBold.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-SemiBold"),
+    url("./fonts/Rubik-SemiBold.ttf") format("truetype");
   font-weight: 600;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Bold'), url('./fonts/Rubik-Bold.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Bold"), url("./fonts/Rubik-Bold.ttf") format("truetype");
   font-weight: 900;
 }
 
 body {
   margin: 0;
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-neutral-9);
-  background-color: var(--color-neutral-2);
+  background-color: var(--background-color);
   font-weight: 400;
 }
 
-h1 {
+.h1 {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-xl);
+}
+
+.h3 {
   font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
+  font-weight: 900;
+}
+
+.font-bold {
+  font-weight: 900;
 }
 
 .color-primary {
@@ -81,8 +104,8 @@ h1 {
 
 .layout {
   display: grid;
-  gap: var(--space-l);
-  grid-template-rows: 40px max-content 1fr 1fr;
+  gap: var(--space-xl);
+  grid-template-rows: 40px max-content max-content max-content;
   padding: var(--space-base);
   height: 97dvh;
 }
@@ -116,20 +139,28 @@ h1 {
 
 .button.big {
   padding: 8px;
-  line-height: var(--font-size-xl);
-  font-size: var(--font-size-xl);
+  line-height: var(--font-size-m);
+  font-size: var(--font-size-m);
   height: 120px;
   width: 120px;
 }
 .button.small {
-  line-height: var(--font-size-xl);
-  font-size: var(--font-size-xl);
+  line-height: var(--font-size-base);
+  font-size: var(--font-size-s);
   height: 40px;
 }
 
 .button:hover {
   background-color: var(--color-neutral-8);
   color: var(--color-neutral-0);
+}
+
+/* Label*/
+
+.label {
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-base);
+  color: var(--color-neutral-7);
 }
 
 .loader {
@@ -177,7 +208,8 @@ h1 {
   border-bottom: 0px;
 }
 .card-view {
-  min-height: 200px;
+  min-height: 52px;
+  height: max-content;
   max-height: 200px;
   overflow: auto;
 }
@@ -196,7 +228,7 @@ h1 {
 .card.main .card-view {
   min-height: unset;
   max-height: unset;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .card .content {
@@ -212,7 +244,7 @@ h1 {
 }
 
 .card .content.selected {
-  background-color: var(--color-neutral-8);
+  background-color: var(--color-primary);
   color: var(--color-neutral-0);
 }
 
@@ -225,19 +257,19 @@ h1 {
   display: flex;
   gap: var(--space-base);
   align-items: center;
-  background-color: var(--color-neutral-0);
+  background-color: var(--color-primary-20);
   color: var(--color-neutral-8);
   transition: all 0.3s ease-in;
   padding: var(--space-s) var(--space-base);
-  border: 1px solid var(--color-neutral-8);
+  border: 1px solid var(--color-primary);
   border-radius: var(--border-radius-s);
 }
 .card .travel-option:hover {
-  background-color: var(--color-neutral-8);
+  background-color: var(--color-primary);
   color: var(--color-neutral-0);
 }
 .card .travel-option.selected {
-  background-color: var(--color-neutral-8);
+  background-color: var(--color-primary);
   color: var(--color-neutral-0);
 }
 
@@ -249,6 +281,31 @@ h1 {
 .card .travel-option .details {
   display: flex;
   justify-content: space-around;
+}
+
+.card .default-detail {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-neutral-0);
+  color: var(--color-neutral-8);
+  transition: all 0.3s ease-in;
+  padding: var(--space-xs) var(--space-base);
+  border-bottom: 1px solid var(--color-neutral-5);
+}
+.card .default-detail:last-child {
+  border-bottom: 0;
+}
+
+.card .default-detail .details {
+  display: flex;
+  justify-content: space-around;
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-base);
+  font-weight: 600;
+}
+.card .default-detail .label {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-base);
 }
 
 .form-destination {
@@ -323,16 +380,30 @@ input::placeholder {
 .flex-align-self-baseline {
   align-self: baseline;
 }
-
+.flex-align-items-center {
+  align-items: center;
+}
 .justify-content-space-between {
   justify-content: space-between;
 }
-
+.gap-base {
+  gap: var(--space-base);
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* 
   Container 
   */
 .container-fullheight {
   height: calc(50cqmin - 32px);
+}
+
+/* Text Alignment */
+.text-align-center {
+  text-align: center;
 }
 
 /* Margins */

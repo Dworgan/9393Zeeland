@@ -1,10 +1,10 @@
-import { BicycleIcon, BusIcon, TaxiIcon, TrainIcon } from "../icons/icons";
+import { BicycleIcon, BusIcon, TaxiIcon, TrainIcon } from "../icons/Icons";
 import { Button } from "./Button";
 
 export function TravelFilter() {
   return (
     <div className="display-flex justify-content-space-between">
-      <Button size={"small"}>
+      <Button size={"small"} selected={true}>
         <TaxiIcon />
       </Button>
       <Button size={"small"} disabled={true}>
