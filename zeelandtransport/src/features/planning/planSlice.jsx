@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 /*
   planning state:
@@ -9,29 +9,29 @@ import { createSlice } from '@reduxjs/toolkit';
   planDone
 */
 
-const station = {
-  _id: -1,
-  name: '',
-};
+// const station = {
+//   _id: -1,
+//   name: '',
+// };
 
 const initialState = {
   listOfStation: [],
-  planningState: '',
-  fromStationQuery: '',
-  fromStation: station,
+  planningState: "",
+  fromStationQuery: "",
+  fromStation: null,
   fromStationsList: [],
-  toStationQuery: '',
-  toStation: station,
+  toStationQuery: "",
+  toStation: null,
   toStationsList: [],
 
   time: new Date().toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
+    hour: "2-digit",
+    minute: "2-digit",
   }),
 };
 
 const planSlice = createSlice({
-  name: 'planning',
+  name: "planning",
   initialState,
   reducers: {
     setListOfStations(state, action) {
@@ -39,7 +39,7 @@ const planSlice = createSlice({
     },
     setFromQuery: (state, action) => {
       state.fromStationQuery = action.payload;
-      state.planningState = 'planFrom';
+      state.planningState = "planFrom";
       let result = [];
       result = state.listOfStation.filter(
         (station) =>
@@ -53,12 +53,12 @@ const planSlice = createSlice({
     setFromStation(state, action) {
       state.fromStation = action.payload;
       state.fromStationQuery = state.fromStation.name;
-      state.planningState = '';
-      state.toStation !== null && (state.planningState = 'planFilter');
+      state.planningState = "";
+      state.toStation !== null && (state.planningState = "planFilter");
     },
     setToQuery(state, action) {
       state.toStationQuery = action.payload;
-      state.planningState = 'planTo';
+      state.planningState = "planTo";
       let result = [];
       result = state.listOfStation.filter(
         (station) =>
@@ -72,12 +72,14 @@ const planSlice = createSlice({
     setToStation(state, action) {
       state.toStation = action.payload;
       state.toStationQuery = state.toStation.name;
-      state.planningState = '';
-
-      state.fromStation !== null && (state.planningState = 'planFilter');
+      state.planningState = "";
+      state.fromStation !== null && (state.planningState = "planFilter");
     },
     setPlanningState(state, action) {
       state.planningState = action.payload;
+    },
+    setPlanningTime(state, action) {
+      state.time = action.payload;
     },
   },
 });
@@ -88,6 +90,8 @@ export const {
   setFromStation,
   setToQuery,
   setToStation,
+  setPlanningState,
+  setPlanningTime,
 } = planSlice.actions;
 
 export default planSlice.reducer;
