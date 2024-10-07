@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Card, MainCard } from "../../components/Card";
-import { FromToIcon, LocationMarker, TaxiIcon } from "../../icons/Icons";
-import { TravelFilter } from "../../components/TravelFilter";
-import { TravelTime } from "../../components/TravelTime";
+import { useDispatch, useSelector } from 'react-redux';
+import { Card, MainCard } from '../../components/Card';
+import { FromToIcon, LocationMarker, TaxiIcon } from '../../icons/Icons';
+import { TravelFilter } from '../../components/TravelFilter';
+import { TravelTime } from '../../components/TravelTime';
 import {
   setFromQuery,
   setFromStation,
@@ -11,20 +11,22 @@ import {
   setPlanningTime,
   setToQuery,
   setToStation,
-} from "./PlanSlice";
-import { useEffect, useState } from "react";
-import Loader from "../../components/Loader";
-import { ErrorMessage, InfoMessage } from "../../components/Feedback";
-import { Button } from "../../components/Button";
-import { setListOfTravelOptions } from "../booking/BookingSlice";
-import { setAppState } from "../../AppSlice";
+} from './PlanSlice';
+import { useEffect, useState } from 'react';
+import Loader from '../../components/Loader';
+import { ErrorMessage, InfoMessage } from '../../components/Feedback';
+import { Button } from '../../components/Button';
+import { setListOfTravelOptions } from '../booking/BookingSlice';
+import { setAppState } from '../../AppSlice';
+import BasicLayout from '../../layout/BasicLayout';
+import { Link } from 'react-router-dom';
 
 export default function PlanDestination() {
   const dispatch = useDispatch();
   const planningState = useSelector((state) => state.plan.planningState);
   const [isLoading, setIsLoading] = useState(false);
   /* Station data */
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(function () {
     async function fetchData() {
@@ -32,9 +34,9 @@ export default function PlanDestination() {
         setIsLoading(true);
         const res = await fetch(`http://localhost:8080/stations`);
         if (!res.ok)
-          throw new Error("Helaas konden er geen stations ingeladen worden");
+          throw new Error('Helaas konden er geen stations ingeladen worden');
         const data = await res.json();
-        if (data.Response === "False") throw new Error("Stations not Found");
+        if (data.Response === 'False') throw new Error('Stations not Found');
         dispatch(setListOfStations(data));
       } catch (err) {
         setError(err.message);
@@ -46,11 +48,11 @@ export default function PlanDestination() {
   }, []);
 
   return (
-    <>
+    <BasicLayout>
       <DestinationCard planningState={planningState} />
       <FilterLocationsresults />
-      {planningState === "planFilter" && <PlanTrip />}
-    </>
+      {planningState === 'planFilter' && <PlanTrip />}
+    </BasicLayout>
   );
 }
 
@@ -69,33 +71,33 @@ const DestinationCard = ({ planningState }) => {
   }
   return (
     <MainCard>
-      <form className="form-destination">
+      <form className='form-destination'>
         <div>
           <FromToIcon />
         </div>
-        <div className="flex1 display-flex flex-direction-column">
+        <div className='flex1 display-flex flex-direction-column'>
           <input
-            placeholder="Van"
-            type="text"
+            placeholder='Van'
+            type='text'
             value={fromStation}
             onChange={(e) => searchFromStation(e.target.value)}
             key={1}
           ></input>
           <input
-            placeholder="Naar"
-            type="text"
+            placeholder='Naar'
+            type='text'
             value={toStation}
             onChange={(e) => searchToStation(e.target.value)}
             key={2}
           ></input>
         </div>
       </form>
-      {planningState === "planFilter" && (
+      {planningState === 'planFilter' && (
         <>
-          <div className="margin-top-base">
+          <div className='margin-top-base'>
             <TravelFilter />
           </div>
-          <div className="margin-top-base">
+          <div className='margin-top-base'>
             <TravelTime />
           </div>
         </>
@@ -118,10 +120,10 @@ const FilterLocationsresults = () => {
   }
   return (
     <>
-      {planningState === "planFrom" && (
-        <Card title={"Vertrek locaties"}>
+      {planningState === 'planFrom' && (
+        <Card title={'Vertrek locaties'}>
           {stationFromList.length === 0 ? (
-            <InfoMessage message={"Geen stations gevonden"} />
+            <InfoMessage message={'Geen stations gevonden'} />
           ) : (
             stationFromList.map((station) => (
               <FilteredStation
@@ -133,10 +135,10 @@ const FilterLocationsresults = () => {
           )}
         </Card>
       )}
-      {planningState === "planTo" && (
-        <Card title={"Aankomst locaties"}>
+      {planningState === 'planTo' && (
+        <Card title={'Aankomst locaties'}>
           {stationToList.length === 0 ? (
-            <InfoMessage message={"Geen stations gevonden"} />
+            <InfoMessage message={'Geen stations gevonden'} />
           ) : (
             stationToList.map((station) => (
               <FilteredStation
@@ -154,12 +156,12 @@ const FilterLocationsresults = () => {
 
 const FilteredStation = ({ station, onClick }) => {
   return (
-    <div className="content" onClick={onClick}>
+    <div className='content' onClick={onClick}>
       <div>
         <LocationMarker />
       </div>
-      <div className="flex1">
-        {station.name + "  " + (station.city !== null ? station.city : "")}{" "}
+      <div className='flex1'>
+        {station.name + '  ' + (station.city !== null ? station.city : '')}{' '}
       </div>
     </div>
   );
@@ -174,17 +176,18 @@ const PlanTrip = () => {
     const tTravelOptions = await getTravelOptions(fromStation, toStation);
     dispatch(setListOfTravelOptions(tTravelOptions));
     const time = new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
+      hour: '2-digit',
+      minute: '2-digit',
     });
-    dispatch(setPlanningState("planDone"));
+    dispatch(setPlanningState('planDone'));
     dispatch(setPlanningTime(time));
-    dispatch(setAppState("appBookingOptions"));
+    dispatch(setAppState('appBookingOptions'));
+    <Link to='/BookingOptions'></Link>;
   }
 
   return (
-    <div className="button-container">
-      <Button size={"big"} onClick={() => GetTravelOptions()}>
+    <div className='button-container'>
+      <Button size={'big'} onClick={() => GetTravelOptions()}>
         Plan
       </Button>
     </div>
@@ -205,29 +208,29 @@ const PlanTrip = () => {
       travelers: 1,
       abilities: [],
       customer: {
-        id: "12345",
-        email: "johndoe@example.com",
-        firstName: "John",
-        lastName: "Doe",
-        phoneNumber: "+1234567890",
+        id: '12345',
+        email: 'johndoe@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        phoneNumber: '+1234567890',
       },
       transportationModes: [],
     });
     try {
       // setIsLoading(true);
-      const url = "http://localhost:8080/planning/offers";
+      const url = 'http://localhost:8080/planning/offers';
       const res = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: x,
       });
 
-      if (!res.ok) throw new Error("Er zijn geen reis opties gevonden");
+      if (!res.ok) throw new Error('Er zijn geen reis opties gevonden');
       const data = await res.json();
-      if (data.Response === "False")
-        throw new Error("Er zijn geen reis opties gevonden");
+      if (data.Response === 'False')
+        throw new Error('Er zijn geen reis opties gevonden');
       console.log(data);
       return data;
     } catch (err) {
