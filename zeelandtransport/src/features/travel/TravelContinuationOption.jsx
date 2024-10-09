@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { GetHoursAndMinutes } from "../../utils/TimeFormat";
 import { Card } from "../../components/Card";
-import { BoatIcon, BusIcon } from "../../icons/Icons";
+import { BoatIcon, BusIcon, TrainIcon } from "../../icons/Icons";
 
 export const TravelContinuationOptionCard = () => {
   const toStation = useSelector((state) => state.plan.toStation);
@@ -18,6 +18,7 @@ export const TravelContinuationOptionCard = () => {
             <div>
               {travelOption.vehicleType === "BUS" && <BusIcon />}
               {travelOption.vehicleType === "VEERDIENST" && <BoatIcon />}
+              {travelOption.vehicleType === "Intercity" && <TrainIcon />}
             </div>
             <div className="flex1 details">
               <div>

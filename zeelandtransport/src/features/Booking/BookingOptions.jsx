@@ -10,6 +10,7 @@ import {
 import { setAppState } from "../../AppSlice";
 import { TravelContinuationOptionCard } from "../travel/TravelContinuationOption";
 import { TravelIcon } from "../../icons/Icons";
+import { useNavigate } from "react-router-dom";
 
 export const testBooking = [
   {
@@ -62,8 +63,10 @@ const TravelOptionCard = ({ departureTime, arrivalTime, price }) => {
     (state) => state.booking.selectedTravelOption
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   function handleSelectTravelOption(iStation) {
     dispatch(setSelectedTravelOption(iStation));
+    navigate("/BookingConfirmation");
     console.log(selectedTravelOption);
   }
   return (

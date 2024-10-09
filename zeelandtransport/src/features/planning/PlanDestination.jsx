@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Card, MainCard } from "../../components/Card";
-import { FromToIcon, LocationMarker, TaxiIcon } from "../../icons/Icons";
+import { FromToIcon, LocationMarker } from "../../icons/Icons";
 import { TravelFilter } from "../../components/TravelFilter";
 import { TravelTime } from "../../components/TravelTime";
 import {
@@ -12,40 +12,37 @@ import {
   setToQuery,
   setToStation,
 } from "./PlanSlice";
-import { useEffect, useState } from "react";
-import Loader from "../../components/Loader";
-import { ErrorMessage, InfoMessage } from "../../components/Feedback";
+import { useEffect } from "react";
+import { InfoMessage } from "../../components/Feedback";
 import { Button } from "../../components/Button";
 import { setListOfTravelOptions } from "../booking/BookingSlice";
 import { setAppState } from "../../AppSlice";
-import BasicLayout from "../../layout/BasicLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import InputField from "../../components/InputField";
 
 export default function PlanDestination() {
   const dispatch = useDispatch();
   const planningState = useSelector((state) => state.plan.planningState);
-  const [isLoading, setIsLoading] = useState(false);
   /* Station data */
-  const [error, setError] = useState("");
 
-  useEffect(function () {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`http://localhost:8080/stations`);
-        if (!res.ok)
-          throw new Error("Helaas konden er geen stations ingeladen worden");
-        const data = await res.json();
-        if (data.Response === "False") throw new Error("Stations not Found");
-        dispatch(setListOfStations(data));
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+  useEffect(
+    function () {
+      async function fetchData() {
+        try {
+          const res = await fetch(`http://localhost:8080/stations`);
+          if (!res.ok)
+            throw new Error("Helaas konden er geen stations ingeladen worden");
+          const data = await res.json();
+          if (data.Response === "False") throw new Error("Stations not Found");
+          dispatch(setListOfStations(data));
+        } catch (err) {
+        } finally {
+        }
       }
-    }
-    fetchData();
-  }, []);
+      fetchData();
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -69,6 +66,7 @@ const DestinationCard = ({ planningState }) => {
   function searchToStation(query) {
     dispatch(setToQuery(query));
   }
+
   return (
     <MainCard>
       <form className="form-destination">
@@ -76,20 +74,22 @@ const DestinationCard = ({ planningState }) => {
           <FromToIcon />
         </div>
         <div className="flex1 display-flex flex-direction-column">
-          <input
-            placeholder="Van"
-            type="text"
+          <InputField
+            placeHolder={"Van"}
+            type={"text"}
             value={fromStation}
             onChange={(e) => searchFromStation(e.target.value)}
             key={1}
-          ></input>
-          <input
-            placeholder="Naar"
-            type="text"
+            showClearButton={true}
+          />
+          <InputField
+            placeHolder={"Naar"}
+            type={"text"}
             value={toStation}
             onChange={(e) => searchToStation(e.target.value)}
-            key={2}
-          ></input>
+            key={1}
+            showClearButton={true}
+          />
         </div>
       </form>
       {planningState === "planFilter" && (
