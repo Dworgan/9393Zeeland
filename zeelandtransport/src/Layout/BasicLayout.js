@@ -1,10 +1,11 @@
 import Navigation from "./Navigation";
+import { Outlet } from "react-router-dom";
 
-function BasicLayout({ children }) {
+function BasicLayout() {
   return (
     <div className="layout">
       <Navigation />
-      {children}
+      <Outlet />
     </div>
   );
 }
