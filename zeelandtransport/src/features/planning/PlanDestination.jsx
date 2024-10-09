@@ -18,6 +18,8 @@ import { ErrorMessage, InfoMessage } from "../../components/Feedback";
 import { Button } from "../../components/Button";
 import { setListOfTravelOptions } from "../booking/BookingSlice";
 import { setAppState } from "../../AppSlice";
+import BasicLayout from "../../layout/BasicLayout";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function PlanDestination() {
   const dispatch = useDispatch();
@@ -168,7 +170,7 @@ const FilteredStation = ({ station, onClick }) => {
 const PlanTrip = () => {
   const fromStation = useSelector((state) => state.plan.fromStation);
   const toStation = useSelector((state) => state.plan.toStation);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   async function GetTravelOptions() {
     const tTravelOptions = await getTravelOptions(fromStation, toStation);
@@ -180,6 +182,7 @@ const PlanTrip = () => {
     dispatch(setPlanningState("planDone"));
     dispatch(setPlanningTime(time));
     dispatch(setAppState("appBookingOptions"));
+    navigate("/BookingOptions");
   }
 
   return (

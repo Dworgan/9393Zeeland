@@ -34,7 +34,7 @@
 
   --color-secondary: #14213d;
 
-  --background-color: var(--color-neutral-8);
+  --background-color: var(--color-primary-20);
 
   --space-xs: 0.25rem; /*4px*/
   --space-s: 0.5rem; /*8px*/
@@ -47,38 +47,38 @@
 
   --card-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   --card-title-shadow: rgba(0, 0, 0, 0.1) 0px -3px 12px;
-  --card-innershadow: inset 0 0 4px var(--color-neutral-5);
+  --card-innershadow: inset 0 0 8px var(--color-neutral-4);
 }
 
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-Light"), url("./fonts/Rubik-Light.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-Light'), url('./fonts/Rubik-Light.ttf') format('truetype');
   font-weight: 200;
 }
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-Regular"),
-    url("./fonts/Rubik-Regular.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-Regular'),
+    url('./fonts/Rubik-Regular.ttf') format('truetype');
   font-weight: 400;
 }
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-SemiBold"),
-    url("./fonts/Rubik-SemiBold.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-SemiBold'),
+    url('./fonts/Rubik-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }
 @font-face {
-  font-family: "Rubik"; /*Can be any text*/
-  src: local("Rubik-Bold"), url("./fonts/Rubik-Bold.ttf") format("truetype");
+  font-family: 'Rubik'; /*Can be any text*/
+  src: local('Rubik-Bold'), url('./fonts/Rubik-Bold.ttf') format('truetype');
   font-weight: 900;
 }
 
 body {
   margin: 0;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--color-neutral-9);
+  color: var(--color-secondary);
   background-color: var(--background-color);
   font-weight: 400;
 }
@@ -118,22 +118,22 @@ body {
 
 .button {
   background-color: var(--color-neutral-0);
-  color: var(--color-neutral-8);
+  color: var(--color-primary);
   padding: var(--space-s);
-  border: 1px solid var(--color-neutral-8);
+  border: 1px solid var(--color-primary);
   border-radius: var(--border-radius-s);
   font-weight: 900;
   cursor: pointer;
   transition: 0.3s;
 }
 .button:disabled {
-  background-color: var(--color-neutral-4);
+  background-color: var(--color-primary-40);
   color: var(--color-neutral-0);
   border: 0;
 }
 
 .button.selected {
-  background-color: var(--color-neutral-8);
+  background-color: var(--color-primary);
   color: var(--color-neutral-0);
 }
 
@@ -151,7 +151,7 @@ body {
 }
 
 .button:hover {
-  background-color: var(--color-neutral-8);
+  background-color: var(--color-primary);
   color: var(--color-neutral-0);
 }
 
@@ -181,7 +181,7 @@ body {
 .card {
   position: relative;
   background-color: var(--color-neutral-0);
-  border: 1px solid var(--color-neutral-5);
+  border: 1px solid var(--color-primary-60);
   border-radius: 0 var(--border-radius-s) var(--border-radius-s)
     var(--border-radius-s);
   padding: var(--space-s);
@@ -204,7 +204,7 @@ body {
   background-color: var(--color-neutral-0);
   padding: var(--space-xs) var(--space-base);
   box-shadow: var(--card-title-shadow);
-  border: 1px solid var(--color-neutral-5);
+  border: 1px solid var(--color-primary-60);
   border-bottom: 0px;
 }
 .card-view {
@@ -240,7 +240,7 @@ body {
   line-height: var(--line-height-base);
   background-color: var(--color-neutral-0);
   transition: all 0.3s ease-in;
-  border-bottom: 1px solid var(--color-neutral-3);
+  border-bottom: 1px solid var(--color-primary-40);
 }
 
 .card .content.selected {
@@ -274,7 +274,7 @@ body {
 }
 
 .card .travel-option .title {
-  color: var(--color-neutral-6);
+  color: var(--color-primary-60);
   font-size: var(--font-size-s);
   line-height: var(--line-height-m);
 }
@@ -290,7 +290,7 @@ body {
   color: var(--color-neutral-8);
   transition: all 0.3s ease-in;
   padding: var(--space-xs) var(--space-base);
-  border-bottom: 1px solid var(--color-neutral-5);
+  border-bottom: 1px solid var(--color-primary-40);
 }
 .card .default-detail:last-child {
   border-bottom: 0;
@@ -309,7 +309,7 @@ body {
 }
 
 .form-destination {
-  background-color: var(--color-neutral-8);
+  background-color: var(--color-primary-140);
   display: flex;
   height: max-content;
   padding: var(--space-base);
@@ -337,7 +337,7 @@ input {
   transition: all 0.18s ease-in;
 }
 input:focus-visible {
-  background-color: var(--color-neutral-4);
+  background-color: var(--color-primary-40);
   border: 0;
   color: var(--color-neutral-8);
   outline: 0;
