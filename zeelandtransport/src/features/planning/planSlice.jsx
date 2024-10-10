@@ -39,16 +39,22 @@ const planSlice = createSlice({
     },
     setFromQuery: (state, action) => {
       state.fromStationQuery = action.payload;
-      state.planningState = "planFrom";
-      let result = [];
-      result = state.listOfStation.filter(
-        (station) =>
-          station.name.includes(state.fromStationQuery) && [
-            ...result,
-            station.name,
-          ]
-      );
-      state.fromStationsList = result;
+      if (action.payload === "") {
+        state.planningState = "";
+        state.fromStationsList = [];
+        state.fromStation = null;
+      } else {
+        state.planningState = "planFrom";
+        let result = [];
+        result = state.listOfStation.filter(
+          (station) =>
+            station.name.includes(state.fromStationQuery) && [
+              ...result,
+              station.name,
+            ]
+        );
+        state.fromStationsList = result;
+      }
     },
     setFromStation(state, action) {
       state.fromStation = action.payload;
@@ -58,16 +64,22 @@ const planSlice = createSlice({
     },
     setToQuery(state, action) {
       state.toStationQuery = action.payload;
-      state.planningState = "planTo";
-      let result = [];
-      result = state.listOfStation.filter(
-        (station) =>
-          station.name.includes(state.toStationQuery) && [
-            ...result,
-            station.name,
-          ]
-      );
-      state.toStationsList = result;
+      if (action.payload === "") {
+        state.planningState = "";
+        state.toStationsList = [];
+        state.toStation = null;
+      } else {
+        state.planningState = "planTo";
+        let result = [];
+        result = state.listOfStation.filter(
+          (station) =>
+            station.name.includes(state.toStationQuery) && [
+              ...result,
+              station.name,
+            ]
+        );
+        state.toStationsList = result;
+      }
     },
     setToStation(state, action) {
       state.toStation = action.payload;

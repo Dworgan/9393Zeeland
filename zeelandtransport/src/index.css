@@ -1,3 +1,7 @@
+@import "./css/cta.css";
+@import "./css/modal.css";
+@import "./css/feedback.css";
+
 :root {
   --font-size-xl: 2.5rem; /*24px*/
   --font-size-m: 1.5rem; /*24px*/
@@ -51,31 +55,31 @@
 }
 
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Light'), url('./fonts/Rubik-Light.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Light"), url("./fonts/Rubik-Light.ttf") format("truetype");
   font-weight: 200;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Regular'),
-    url('./fonts/Rubik-Regular.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Regular"),
+    url("./fonts/Rubik-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-SemiBold'),
-    url('./fonts/Rubik-SemiBold.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-SemiBold"),
+    url("./fonts/Rubik-SemiBold.ttf") format("truetype");
   font-weight: 600;
 }
 @font-face {
-  font-family: 'Rubik'; /*Can be any text*/
-  src: local('Rubik-Bold'), url('./fonts/Rubik-Bold.ttf') format('truetype');
+  font-family: "Rubik"; /*Can be any text*/
+  src: local("Rubik-Bold"), url("./fonts/Rubik-Bold.ttf") format("truetype");
   font-weight: 900;
 }
 
 body {
   margin: 0;
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-secondary);
@@ -114,45 +118,6 @@ body {
   display: flex;
   column-gap: var(--space-l);
   align-items: center;
-}
-
-.button {
-  background-color: var(--color-neutral-0);
-  color: var(--color-primary);
-  padding: var(--space-s);
-  border: 1px solid var(--color-primary);
-  border-radius: var(--border-radius-s);
-  font-weight: 900;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.button:disabled {
-  background-color: var(--color-primary-40);
-  color: var(--color-neutral-0);
-  border: 0;
-}
-
-.button.selected {
-  background-color: var(--color-primary);
-  color: var(--color-neutral-0);
-}
-
-.button.big {
-  padding: 8px;
-  line-height: var(--font-size-m);
-  font-size: var(--font-size-m);
-  height: 120px;
-  width: 120px;
-}
-.button.small {
-  line-height: var(--font-size-base);
-  font-size: var(--font-size-s);
-  height: 40px;
-}
-
-.button:hover {
-  background-color: var(--color-primary);
-  color: var(--color-neutral-0);
 }
 
 /* Label*/
@@ -252,6 +217,10 @@ body {
   width: 24px;
   height: 24px;
 }
+.icon-container.small {
+  width: 16px;
+  height: 16px;
+}
 
 .card .travel-option {
   display: flex;
@@ -285,11 +254,12 @@ body {
 
 .card .default-detail {
   display: flex;
+  gap: var(--space-base);
   align-items: center;
   background-color: var(--color-neutral-0);
   color: var(--color-neutral-8);
   transition: all 0.3s ease-in;
-  padding: var(--space-xs) var(--space-base);
+  padding: var(--space-xs) 0;
   border-bottom: 1px solid var(--color-primary-40);
 }
 .card .default-detail:last-child {
@@ -298,10 +268,18 @@ body {
 
 .card .default-detail .details {
   display: flex;
-  justify-content: space-around;
   font-size: var(--font-size-s);
   line-height: var(--line-height-base);
   font-weight: 600;
+}
+.card .default-detail .details > div:first-child {
+  max-width: 50px;
+}
+.card .default-detail .details > div {
+  flex: 1;
+}
+.card .default-detail .details > div:last-child {
+  max-width: 50px;
 }
 .card .default-detail .label {
   font-size: var(--font-size-xs);
@@ -335,6 +313,7 @@ input {
   font-weight: bold;
   padding: var(--space-s);
   transition: all 0.18s ease-in;
+  flex: 1;
 }
 input:focus-visible {
   background-color: var(--color-primary-40);
@@ -349,6 +328,20 @@ input::placeholder {
   color: var(--color-neutral-0);
 }
 
+.input-container {
+  position: relative;
+  display: flex;
+}
+.input-container .clear-button {
+  position: absolute;
+  right: var(--space-s);
+  top: var(--space-s);
+  color: var(--color-neutral-0);
+}
+
+.input-container:has(input:focus-visible) .clear-button {
+  color: var(--color-neutral-8);
+}
 /*
   Flex 
 */
