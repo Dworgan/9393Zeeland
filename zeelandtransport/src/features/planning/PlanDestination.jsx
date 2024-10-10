@@ -12,7 +12,7 @@ import {
   setToQuery,
   setToStation,
 } from "./PlanSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { InfoMessage } from "../../components/Feedback";
 import { Button } from "../../components/Button";
 import { setListOfTravelOptions } from "../booking/BookingSlice";
@@ -68,41 +68,45 @@ const DestinationCard = ({ planningState }) => {
   }
 
   return (
-    <MainCard>
-      <form className="form-destination">
-        <div>
-          <FromToIcon />
-        </div>
-        <div className="flex1 display-flex flex-direction-column">
-          <InputField
-            placeHolder={"Van"}
-            type={"text"}
-            value={fromStation}
-            onChange={(e) => searchFromStation(e.target.value)}
-            key={1}
-            showClearButton={true}
-          />
-          <InputField
-            placeHolder={"Naar"}
-            type={"text"}
-            value={toStation}
-            onChange={(e) => searchToStation(e.target.value)}
-            key={1}
-            showClearButton={true}
-          />
-        </div>
-      </form>
-      {planningState === "planFilter" && (
-        <>
-          <div className="margin-top-base">
-            <TravelFilter />
+    <>
+      <MainCard>
+        <form className="form-destination">
+          <div>
+            <FromToIcon />
           </div>
-          <div className="margin-top-base">
-            <TravelTime />
+          <div className="flex1 display-flex flex-direction-column">
+            <InputField
+              placeHolder={"Van"}
+              type={"text"}
+              value={fromStation}
+              onChange={(e) => searchFromStation(e.target.value)}
+              key={1}
+              showClearButton={fromStation !== ""}
+              onClearButton={() => searchFromStation("")}
+            />
+            <InputField
+              placeHolder={"Naar"}
+              type={"text"}
+              value={toStation}
+              onChange={(e) => searchToStation(e.target.value)}
+              key={2}
+              showClearButton={toStation !== ""}
+              onClearButton={() => searchToStation("")}
+            />
           </div>
-        </>
-      )}
-    </MainCard>
+        </form>
+        {planningState === "planFilter" && (
+          <>
+            <div className="margin-top-base">
+              <TravelFilter />
+            </div>
+            <div className="margin-top-base">
+              <TravelTime />
+            </div>
+          </>
+        )}
+      </MainCard>
+    </>
   );
 };
 
@@ -168,11 +172,13 @@ const FilteredStation = ({ station, onClick }) => {
 };
 
 const PlanTrip = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const fromStation = useSelector((state) => state.plan.fromStation);
   const toStation = useSelector((state) => state.plan.toStation);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   async function GetTravelOptions() {
+    setIsLoading(true);
     const tTravelOptions = await getTravelOptions(fromStation, toStation);
     dispatch(setListOfTravelOptions(tTravelOptions));
     const time = new Date().toLocaleTimeString([], {
@@ -182,12 +188,17 @@ const PlanTrip = () => {
     dispatch(setPlanningState("planDone"));
     dispatch(setPlanningTime(time));
     dispatch(setAppState("appBookingOptions"));
+    setIsLoading(false);
     navigate("/BookingOptions");
   }
 
   return (
     <div className="button-container">
-      <Button size={"big"} onClick={() => GetTravelOptions()}>
+      <Button
+        size={"big"}
+        onClick={() => GetTravelOptions()}
+        isLoading={isLoading}
+      >
         Plan
       </Button>
     </div>

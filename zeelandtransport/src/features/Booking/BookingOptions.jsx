@@ -11,6 +11,8 @@ import { setAppState } from "../../AppSlice";
 import { TravelContinuationOptionCard } from "../travel/TravelContinuationOption";
 import { TravelIcon } from "../../icons/Icons";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Modal from "../../components/Modal";
 
 export const testBooking = [
   {
@@ -63,10 +65,10 @@ const TravelOptionCard = ({ departureTime, arrivalTime, price }) => {
     (state) => state.booking.selectedTravelOption
   );
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   function handleSelectTravelOption(iStation) {
     dispatch(setSelectedTravelOption(iStation));
-    navigate("/BookingConfirmation");
+
     console.log(selectedTravelOption);
   }
   return (
@@ -107,18 +109,38 @@ const TravelOptionCard = ({ departureTime, arrivalTime, price }) => {
 };
 
 const BookATravel = () => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   async function GetTravelOptions() {
+    setShowConfirmation(false);
+    setIsLoading(true);
     const tConfirmedTravelOption = await setBooking();
     dispatch(setConfirmedTravelOption(tConfirmedTravelOption));
     dispatch(setAppState("appTravelConfirmation"));
+    setIsLoading(false);
+    navigate("/BookingConfirmation");
   }
   return (
-    <div className="button-container">
-      <Button size={"big"} onClick={() => GetTravelOptions()}>
-        Boek
-      </Button>
-    </div>
+    <>
+      <div className="button-container">
+        <Button
+          size={"big"}
+          onClick={() => setShowConfirmation(true)}
+          isLoading={isLoading}
+        >
+          Boek
+        </Button>
+      </div>
+
+      {showConfirmation && (
+        <Modal
+          onNoClicked={() => setShowConfirmation(false)}
+          onYesClicked={() => GetTravelOptions()}
+        />
+      )}
+    </>
   );
   async function setBooking() {
     var b = {

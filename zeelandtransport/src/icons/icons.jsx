@@ -237,10 +237,10 @@ export function BoatIcon() {
 
 export function CloseIcon() {
   return (
-    <div className="icon-container">
+    <div className="icon-container small">
       <svg
-        width="24"
-        height="24"
+        width="inherit"
+        height="inherit"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

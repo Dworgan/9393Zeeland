@@ -7,6 +7,7 @@ export default function InputField({
   onChange,
   key,
   showClearButton,
+  onClearButton,
 }) {
   return (
     <div className="input-container">
@@ -17,9 +18,11 @@ export default function InputField({
         onChange={onChange}
         key={key}
       ></input>
-      <div className="clear-button">
-        <CloseIcon />
-      </div>
+      {showClearButton && (
+        <div className="clear-button" onClick={onClearButton}>
+          <CloseIcon />
+        </div>
+      )}
     </div>
   );
 }

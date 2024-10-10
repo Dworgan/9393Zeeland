@@ -1,0 +1,31 @@
+.modal {
+  position: absolute;
+  height: max-content;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  background: var(--color-primary-20);
+  z-index: 4;
+  /* left: 0; */
+  /* top: calc(80dvh / 2); */
+  border-radius: var(--border-radius-s);
+  justify-self: center;
+  padding: var(--space-base);
+  gap: var(--space-s);
+}
+
+.modal-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.2;
+  top: 0;
+  left: 0;
+}
+
+.modal .modal-cta {
+  display: flex;
+  justify-content: space-between;
+}
