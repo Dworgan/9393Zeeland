@@ -42,3 +42,8 @@
   color: var(--color-neutral-0);
   background-color: var(--color-primary);
 }
+
+a:-webkit-any-link {
+  color: var(--color-primary);
+  text-decoration: none;
+}

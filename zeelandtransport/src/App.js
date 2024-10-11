@@ -2,11 +2,10 @@ import BasicLayout from "./layout/BasicLayout";
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from "react";
 import PlanDestination from "./features/planning/PlanDestination";
-import { useSelector } from "react-redux";
 import BookingOptions from "./features/booking/BookingOptions";
 import BookingConfirmed from "./features/booking/BookingConfirmed";
-import { Outlet, Route, Routes } from "react-router-dom";
-import Navigation from "./layout/Navigation";
+import { Route, Routes } from "react-router-dom";
+import UserEdit from "./features/user/UserEdit";
 
 export default function App() {
   return (
@@ -18,6 +17,7 @@ export default function App() {
           path="/BookingConfirmation"
           element={<BookingConfirmed />}
         ></Route>
+        <Route path="/EditUser" element={<UserEdit />}></Route>
       </Route>
     </Routes>
   );

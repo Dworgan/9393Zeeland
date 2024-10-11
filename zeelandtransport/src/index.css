@@ -4,13 +4,14 @@
 
 :root {
   --font-size-xl: 2.5rem; /*24px*/
+  --font-size-l: 2rem; /*24px*/
   --font-size-m: 1.5rem; /*24px*/
   --font-size-base: 1rem; /*16px*/
   --font-size-s: 0.75rem; /*12px*/
   --font-size-xs: 0.5rem; /*8px*/
 
   --line-height-xl: 2.5rem; /*24px*/
-
+  --line-height-l: 2rem; /*24px*/
   --line-height-m: 1.5rem; /*24px*/
   --line-height-base: 1rem; /*16px*/
   --line-height-s: 0.75rem; /*12px*/
@@ -92,6 +93,11 @@ body {
   line-height: var(--line-height-xl);
 }
 
+.h2 {
+  font-size: var(--font-size-l);
+  line-height: var(--line-height-l);
+  font-weight: 900;
+}
 .h3 {
   font-size: var(--font-size-m);
   line-height: var(--line-height-m);
@@ -101,7 +107,9 @@ body {
 .font-bold {
   font-weight: 900;
 }
-
+.color-primary-120 {
+  color: var(--color-primary-120);
+}
 .color-primary {
   color: var(--color-primary);
 }
@@ -303,6 +311,40 @@ body {
 
 /*
 
+Date Picker
+*/
+.datepicker-container {
+  background-color: var(--color-primary-40);
+  padding: var(--space-s) var(--space-base);
+  border-radius: var(--border-radius-s);
+  display: flex;
+  gap: var(--space-base);
+}
+.datepicker-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-primary);
+  background-color: var(--color-neutral-0);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--border-radius-s);
+  padding: var(--space-s);
+  gap: var(--space-base);
+  transition: all 0.18s ease-in;
+}
+.datepicker-item.selected {
+  background-color: var(--color-primary);
+  color: var(--color-neutral-0);
+}
+
+.datepicker-time input {
+  background: var(--color-primary);
+  color: var(--color-neutral-0);
+  border-radius: var(--border-radius-s);
+  flex: 0;
+}
+/*
+
 INPUT
 
 */
@@ -331,6 +373,12 @@ input::placeholder {
 .input-container {
   position: relative;
   display: flex;
+  flex-direction: column;
+}
+.input-container .label {
+  font-size: var(--font-size-s);
+  margin-bottom: var(--space-s);
+  color: var(--color-secondary);
 }
 .input-container .clear-button {
   position: absolute;
@@ -341,6 +389,11 @@ input::placeholder {
 
 .input-container:has(input:focus-visible) .clear-button {
   color: var(--color-neutral-8);
+}
+
+.input-container.secondary input {
+  border: 2px solid var(--color-primary-80);
+  border-radius: var(--border-radius-s);
 }
 /*
   Flex 
