@@ -19,6 +19,7 @@ import { setListOfTravelOptions } from "../booking/BookingSlice";
 import { setAppState } from "../../AppSlice";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../components/InputField";
+import DatePicker from "../../components/TravelDatePicker";
 
 export default function PlanDestination() {
   const dispatch = useDispatch();
@@ -80,7 +81,6 @@ const DestinationCard = ({ planningState }) => {
               type={"text"}
               value={fromStation}
               onChange={(e) => searchFromStation(e.target.value)}
-              key={1}
               showClearButton={fromStation !== ""}
               onClearButton={() => searchFromStation("")}
             />
@@ -89,7 +89,6 @@ const DestinationCard = ({ planningState }) => {
               type={"text"}
               value={toStation}
               onChange={(e) => searchToStation(e.target.value)}
-              key={2}
               showClearButton={toStation !== ""}
               onClearButton={() => searchToStation("")}
             />
@@ -99,6 +98,9 @@ const DestinationCard = ({ planningState }) => {
           <>
             <div className="margin-top-base">
               <TravelFilter />
+            </div>
+            <div className="margin-top-base">
+              <DatePicker />
             </div>
             <div className="margin-top-base">
               <TravelTime />
@@ -181,12 +183,8 @@ const PlanTrip = () => {
     setIsLoading(true);
     const tTravelOptions = await getTravelOptions(fromStation, toStation);
     dispatch(setListOfTravelOptions(tTravelOptions));
-    const time = new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+
     dispatch(setPlanningState("planDone"));
-    dispatch(setPlanningTime(time));
     dispatch(setAppState("appBookingOptions"));
     setIsLoading(false);
     navigate("/BookingOptions");

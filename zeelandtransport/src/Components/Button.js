@@ -2,8 +2,8 @@ import Loader from "./feedback/Loader";
 
 export function Button({
   children,
-  selected,
-  size,
+  selected = false,
+  size = "",
   onClick,
   disabled = false,
   additionalClass,

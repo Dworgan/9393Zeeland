@@ -8,9 +8,12 @@ export default function InputField({
   key,
   showClearButton,
   onClearButton,
+  label = "",
+  cssExtra = "",
 }) {
   return (
-    <div className="input-container">
+    <div className={"input-container " + cssExtra}>
+      {label !== "" && <div className="label">{label}</div>}
       <input
         placeholder={placeHolder}
         type={type}
