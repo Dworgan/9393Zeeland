@@ -8,7 +8,6 @@ import {
   setFromStation,
   setListOfStations,
   setPlanningState,
-  setPlanningTime,
   setToQuery,
   setToStation,
 } from "./PlanSlice";
@@ -20,10 +19,17 @@ import { setAppState } from "../../AppSlice";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../components/InputField";
 import DatePicker from "../../components/TravelDatePicker";
+import ErrorMessage from "../../components/feedback/ErrorMessage";
+const errorObj = {
+  title: "",
+  message: "",
+  show: false,
+};
 
 export default function PlanDestination() {
   const dispatch = useDispatch();
   const planningState = useSelector((state) => state.plan.planningState);
+  const [errorMessage, setErrorMessage] = useState(errorObj);
   /* Station data */
 
   useEffect(
@@ -37,6 +43,7 @@ export default function PlanDestination() {
           if (data.Response === "False") throw new Error("Stations not Found");
           dispatch(setListOfStations(data));
         } catch (err) {
+          setErrorMessage(err);
         } finally {
         }
       }

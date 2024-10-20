@@ -15,27 +15,62 @@ export const TravelContinuationOptionCard = () => {
       {travelOptions.tripContinuationOptions.length > 0 &&
         travelOptions.tripContinuationOptions.map((travelOption) => (
           <div className={"default-detail "}>
-            <div>
-              {travelOption.vehicleType === "BUS" && <BusIcon />}
-              {travelOption.vehicleType === "VEERDIENST" && <BoatIcon />}
-              {travelOption.vehicleType === "Intercity" && <TrainIcon />}
-            </div>
-            <div className="flex1 details">
-              <div>
-                <div className="label">Lijn Nmr</div>
-                <div>{travelOption.laneNumber}</div>
-              </div>
-              <div>
-                <div className="label">Richting</div>
-                <div>{travelOption.destination}</div>
-              </div>
-              <div>
-                <div className="label">Vertrektijd</div>
-                <div>{GetHoursAndMinutes(travelOption.departureTime)}</div>
-              </div>
-            </div>
+            {travelOption.vehicleType === "TRAIN" && (
+              <TrainInfo iTravelOption={travelOption} />
+            )}
+
+            {travelOption.vehicleType === "BUS" && (
+              <BusInfo iTravelOption={travelOption} />
+            )}
           </div>
         ))}
     </Card>
+  );
+};
+
+const TrainInfo = ({ iTravelOption }) => {
+  return (
+    <>
+      <div>
+        <TrainIcon />
+      </div>
+      <div className="flex1 details">
+        <div>
+          <div className="label">Platform Nmr</div>
+          <div>{iTravelOption?.routeName}</div>
+        </div>
+        <div>
+          <div className="label">Richting</div>
+          <div>{iTravelOption?.destination}</div>
+        </div>
+        <div>
+          <div className="label">Vertrektijd</div>
+          <div>{GetHoursAndMinutes(iTravelOption?.departureTime)}</div>
+        </div>
+      </div>
+    </>
+  );
+};
+const BusInfo = ({ iTravelOption }) => {
+  return (
+    <>
+      <div>
+        <TrainIcon />
+      </div>
+      <div className="flex1 details">
+        <div>
+          <div className="label">Lijn Nmr</div>
+          <div>{iTravelOption?.routeName}</div>
+        </div>
+        <div>
+          <div className="label">Richting</div>
+          <div>{iTravelOption?.destination}</div>
+        </div>
+        <div>
+          <div className="label">Vertrektijd</div>
+          <div>{GetHoursAndMinutes(iTravelOption?.departureTime)}</div>
+        </div>
+      </div>
+    </>
   );
 };

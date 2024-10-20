@@ -1,6 +1,7 @@
 @import "./css/cta.css";
 @import "./css/modal.css";
 @import "./css/feedback.css";
+@import "./css/sidebar.css";
 
 :root {
   --font-size-xl: 2.5rem; /*24px*/
@@ -124,7 +125,7 @@ body {
 
 .nav {
   display: flex;
-  column-gap: var(--space-l);
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -281,7 +282,12 @@ body {
   font-weight: 600;
 }
 .card .default-detail .details > div:first-child {
-  max-width: 50px;
+  max-width: 60px;
+  width: 60px;
+}
+.card .default-detail .details.l > div:first-child {
+  max-width: 85px;
+  width: 85px;
 }
 .card .default-detail .details > div {
   flex: 1;

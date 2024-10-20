@@ -30,9 +30,12 @@ const userSlice = createSlice({
         state.userInfo.phoneNumber = action.payload.phoneNumber;
       },
     },
+    setAddUserBooking(state, action) {
+      state.listOfBookings.push(action.payload);
+    },
   },
 });
 
-export const { setUpdateUserInfo } = userSlice.actions;
+export const { setUpdateUserInfo, setAddUserBooking } = userSlice.actions;
 
 export default userSlice.reducer;

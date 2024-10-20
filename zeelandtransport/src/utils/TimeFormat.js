@@ -15,7 +15,7 @@ export function GetDayAndMonth(date) {
 }
 
 export function GetDayName(date) {
-  var days = ["Zo", "Ma", "Di", "Wo", "Do", "Fr", "Sa"];
+  var days = ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"];
   var d = new Date(date);
   var dayName = days[d.getDay()];
 

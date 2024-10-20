@@ -13,6 +13,7 @@ import { TravelIcon } from "../../icons/Icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Modal from "../../components/Modal";
+import { setAddUserBooking } from "../user/UserSlice";
 
 export const testBooking = [
   {
@@ -118,6 +119,7 @@ const BookATravel = () => {
     setIsLoading(true);
     const tConfirmedTravelOption = await setBooking();
     dispatch(setConfirmedTravelOption(tConfirmedTravelOption));
+    dispatch(setAddUserBooking(tConfirmedTravelOption));
     dispatch(setAppState("appTravelConfirmation"));
     setIsLoading(false);
     navigate("/BookingConfirmation");
