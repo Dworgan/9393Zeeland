@@ -110,6 +110,9 @@ const TravelOptionCard = ({ departureTime, arrivalTime, price }) => {
 };
 
 const BookATravel = () => {
+  const selectedTravelOption = useSelector(
+    (state) => state.booking.selectedTravelOption
+  );
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -117,7 +120,7 @@ const BookATravel = () => {
   async function GetTravelOptions() {
     setShowConfirmation(false);
     setIsLoading(true);
-    const tConfirmedTravelOption = await setBooking();
+    const tConfirmedTravelOption = await setBooking(selectedTravelOption);
     dispatch(setConfirmedTravelOption(tConfirmedTravelOption));
     dispatch(setAddUserBooking(tConfirmedTravelOption));
     dispatch(setAppState("appTravelConfirmation"));
@@ -144,23 +147,24 @@ const BookATravel = () => {
       )}
     </>
   );
-  async function setBooking() {
-    var b = {
-      id: "df5a2387-2a97-4286-d419-08dcdee6d1c3",
-      from: {
-        latitude: 51.330444,
-        longitude: 3.498376,
-        stopReferences: [],
-      },
-      to: {
-        latitude: 51.396683,
-        longitude: 3.551355,
-        stopReferences: [],
-      },
-      departureTime: "2024-09-27T15:00:00+02:00",
-      arrivalTime: "2024-09-27T15:19:08+02:00",
-      customer: null,
-    };
+  async function setBooking(selectedBooking) {
+    // var b = {
+    //   id: "df5a2387-2a97-4286-d419-08dcdee6d1c3",
+    //   from: {
+    //     latitude: 51.330444,
+    //     longitude: 3.498376,
+    //     stopReferences: [],
+    //   },
+    //   to: {
+    //     latitude: 51.396683,
+    //     longitude: 3.551355,
+    //     stopReferences: [],
+    //   },
+    //   departureTime: "2024-09-27T15:00:00+02:00",
+    //   arrivalTime: "2024-09-27T15:19:08+02:00",
+    //   customer: null,
+    // };
+
     try {
       //setIsLoading(true);
       const url = "http://localhost:8080/bookings";
@@ -169,7 +173,7 @@ const BookATravel = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(b),
+        body: JSON.stringify(selectedBooking),
       });
 
       if (!res.ok) throw new Error("Booking is niet gelukt");

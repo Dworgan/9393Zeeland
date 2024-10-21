@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import { GetDayAndMonth, GetDayName } from "../utils/TimeFormat";
 
 export default function DatePicker(onDatePicked) {
-  const dateData = {
-    _id: -1,
-    newDate: "",
-    originalDate: "",
-  };
   const [dateOptions, setDateOptions] = useState([]);
   const [selectedDate, setSelectedDate] = useState();
   useEffect(function () {
@@ -19,20 +14,17 @@ export default function DatePicker(onDatePicked) {
         newDate: "",
         originalDate: "",
       };
-      console.log("tDateData 0" + tDateData.newDate);
       var tDay = new Date();
       tDay.setDate(tDay.getDate() + index);
       tDateData._id = index;
       tDateData.newDate = tDay;
       tDateData.originalDate = tDay;
-      console.log("tDateData 1" + tDateData.newDate);
 
       tDates.push(tDateData);
     }
     setDateOptions(() => tDates);
 
     setSelectedDate(() => dateOptions[0]);
-    console.log("selectedDate " + selectedDate?.newDate);
   }, []);
 
   function onSetSelectedDate(iDate) {

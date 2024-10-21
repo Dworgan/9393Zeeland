@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { TaxiIcon } from "../../icons/Icons";
 import { setConfirmedTravelOption } from "../booking/BookingSlice";
+import {
+  FormatHoursAndMinutes,
+  GetHoursAndMinutes,
+} from "../../utils/TimeFormat";
 
 export default function UserBookings() {
   const [savedBookings, setSavedBookings] = useState([]);
@@ -13,15 +17,12 @@ export default function UserBookings() {
   const initListOfBookings = useSelector((state) => state.user.listOfBookings);
   useEffect(() => {
     setSavedBookings(initListOfBookings);
-  }, []);
-
-  function onSaveUserData() {
-    navigate("/");
-  }
+  }, [initListOfBookings]);
 
   function onBookingSelection(iTravelOption) {
+    console.log(iTravelOption);
     dispatch(setConfirmedTravelOption(iTravelOption));
-    navigate("/UserBookings");
+    navigate("/BookingConfirmation");
   }
 
   return (
@@ -33,7 +34,7 @@ export default function UserBookings() {
           savedBookings.map((travelOption) => (
             <div
               className={"default-detail "}
-              onClick={onBookingSelection(travelOption)}
+              onClick={() => onBookingSelection(travelOption)}
             >
               <div>
                 <TaxiIcon />
@@ -53,6 +54,7 @@ export default function UserBookings() {
                 </div>
                 <div>
                   <div className="label">Vertrektijd</div>
+                  <div>{GetHoursAndMinutes(travelOption?.departureTime)}</div>
                 </div>
               </div>
             </div>

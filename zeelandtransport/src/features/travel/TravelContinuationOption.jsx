@@ -1,7 +1,10 @@
 import { useSelector } from "react-redux";
-import { GetHoursAndMinutes } from "../../utils/TimeFormat";
+import {
+  FormatHoursAndMinutes,
+  GetHoursAndMinutes,
+} from "../../utils/TimeFormat";
 import { Card } from "../../components/Card";
-import { BoatIcon, BusIcon, TrainIcon } from "../../icons/Icons";
+import { BusIcon, TrainIcon } from "../../icons/Icons";
 
 export const TravelContinuationOptionCard = () => {
   const toStation = useSelector((state) => state.plan.toStation);
@@ -45,7 +48,7 @@ const TrainInfo = ({ iTravelOption }) => {
         </div>
         <div>
           <div className="label">Vertrektijd</div>
-          <div>{GetHoursAndMinutes(iTravelOption?.departureTime)}</div>
+          <div>{FormatHoursAndMinutes(iTravelOption?.departureTime)}</div>
         </div>
       </div>
     </>
@@ -55,7 +58,7 @@ const BusInfo = ({ iTravelOption }) => {
   return (
     <>
       <div>
-        <TrainIcon />
+        <BusIcon />
       </div>
       <div className="flex1 details">
         <div>
@@ -68,7 +71,7 @@ const BusInfo = ({ iTravelOption }) => {
         </div>
         <div>
           <div className="label">Vertrektijd</div>
-          <div>{GetHoursAndMinutes(iTravelOption?.departureTime)}</div>
+          <div>{FormatHoursAndMinutes(iTravelOption?.departureTime)}</div>
         </div>
       </div>
     </>

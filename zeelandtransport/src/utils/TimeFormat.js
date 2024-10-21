@@ -3,9 +3,14 @@ export function GetHoursAndMinutes(date) {
     hour: "2-digit",
     minute: "2-digit",
   });
+
   return tData;
 }
-
+export function FormatHoursAndMinutes(time) {
+  const myArray = time.split(":");
+  var tTime = myArray[0] + ":" + myArray[1];
+  return tTime;
+}
 export function GetDayAndMonth(date) {
   var tDataDay = new Date(date).toLocaleString([], {
     month: "numeric",
