@@ -64,12 +64,15 @@
 }
 
 .navbar-toggle {
-  background-color: var(--color-neutral-0);
   width: 100%;
   height: 80px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.navbar-toggle a:-webkit-any-link {
+  color: var(--color-secondary);
 }
 
 span {

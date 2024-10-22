@@ -1,26 +1,26 @@
-import { Button } from "../../components/Button";
-import { Card } from "../../components/Card";
-import DisplayPlanning from "../planning/DisplayPlanning";
-import { useDispatch, useSelector } from "react-redux";
-import { GetHoursAndMinutes } from "../../utils/TimeFormat";
+import { Button } from '../../components/Button';
+import { Card } from '../../components/Card';
+import DisplayPlanning from '../planning/DisplayPlanning';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetHoursAndMinutes } from '../../utils/TimeFormat';
 import {
   setConfirmedTravelOption,
   setSelectedTravelOption,
-} from "./BookingSlice";
-import { setAppState } from "../../AppSlice";
-import { TravelContinuationOptionCard } from "../travel/TravelContinuationOption";
-import { TravelIcon } from "../../icons/Icons";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import Modal from "../../components/Modal";
-import { setAddUserBooking } from "../user/UserSlice";
+} from './BookingSlice';
+import { setAppState } from '../../AppSlice';
+import { TravelContinuationOptionCard } from '../travel/TravelContinuationOption';
+import { TravelIcon } from '../../icons/Icons';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Modal from '../../components/Modal';
+import { setAddUserBooking } from '../user/UserSlice';
 
 export const testBooking = [
   {
     validUntil: new Date().getDate(),
     options: [
       {
-        id: "794c9d63-5992-41a2-8885-08dcd7d31bbc",
+        id: '794c9d63-5992-41a2-8885-08dcd7d31bbc',
         from: {
           latitude: 51.493202,
           longitude: 3.616107,
@@ -31,8 +31,8 @@ export const testBooking = [
           longitude: 3.630872,
           stopReferences: [],
         },
-        departureTime: "2024-09-18T15:30:00+02:00",
-        arrivalTime: "2024-09-18T15:34:48+02:00",
+        departureTime: '2024-09-18T15:30:00+02:00',
+        arrivalTime: '2024-09-18T15:34:48+02:00',
         customer: null,
       },
     ],
@@ -68,38 +68,40 @@ const TravelOptionCard = ({ departureTime, arrivalTime, price }) => {
   const dispatch = useDispatch();
 
   function handleSelectTravelOption(iStation) {
-    dispatch(setSelectedTravelOption(iStation));
+    if (iStation !== null) {
+      dispatch(setSelectedTravelOption(iStation));
+    }
 
     console.log(selectedTravelOption);
   }
   return (
-    <Card title={"Reis Opties"}>
-      {travelOptions.options.length === 0 && (
-        <div className="flex-center"> Er zijn geen reisopties beschikbaar.</div>
+    <Card title={'Reis Opties'}>
+      {travelOptions.options?.length === 0 && (
+        <div className='flex-center'> Er zijn geen reisopties beschikbaar.</div>
       )}
-      {travelOptions.options.length > 0 &&
+      {travelOptions.options?.length > 0 &&
         travelOptions.options.map((travelOption) => (
           <div
             className={
-              "travel-option " +
-              (travelOption === selectedTravelOption ? "selected" : "")
+              'travel-option ' +
+              (travelOption === selectedTravelOption ? 'selected' : '')
             }
             onClick={() => handleSelectTravelOption(travelOption)}
           >
             <div>
               <TravelIcon />
             </div>
-            <div className="flex1 details">
+            <div className='flex1 details'>
               <div>
-                <div className="label">Vertrek </div>
+                <div className='label'>Vertrek </div>
                 <div>{GetHoursAndMinutes(travelOption.departureTime)}</div>
               </div>
               <div>
-                <div className="label">Aankomst</div>
+                <div className='label'>Aankomst</div>
                 <div>{GetHoursAndMinutes(travelOption.arrivalTime)}</div>
               </div>
               <div>
-                <div className="label">Prijs</div>
+                <div className='label'>Prijs</div>
                 <div>3,50</div>
               </div>
             </div>
@@ -123,15 +125,15 @@ const BookATravel = () => {
     const tConfirmedTravelOption = await setBooking(selectedTravelOption);
     dispatch(setConfirmedTravelOption(tConfirmedTravelOption));
     dispatch(setAddUserBooking(tConfirmedTravelOption));
-    dispatch(setAppState("appTravelConfirmation"));
+    dispatch(setAppState('appTravelConfirmation'));
     setIsLoading(false);
-    navigate("/BookingConfirmation");
+    navigate('/BookingConfirmation');
   }
   return (
     <>
-      <div className="button-container">
+      <div className='button-container'>
         <Button
-          size={"big"}
+          size={'big'}
           onClick={() => setShowConfirmation(true)}
           isLoading={isLoading}
         >
@@ -167,18 +169,18 @@ const BookATravel = () => {
 
     try {
       //setIsLoading(true);
-      const url = "http://localhost:8080/bookings";
+      const url = 'http://localhost:8080/bookings';
       const res = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(selectedBooking),
       });
 
-      if (!res.ok) throw new Error("Booking is niet gelukt");
+      if (!res.ok) throw new Error('Booking is niet gelukt');
       const data = await res.json();
-      if (data.Response === "False") throw new Error("Booking is niet gelukt");
+      if (data.Response === 'False') throw new Error('Booking is niet gelukt');
       console.log(data);
       return confirmBooking(data.id);
     } catch (err) {
@@ -191,19 +193,19 @@ const BookATravel = () => {
     try {
       const url = `http://localhost:8080/bookings/${id}/events`;
       const res = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          operation: "COMMIT",
-          origin: "TO",
+          operation: 'COMMIT',
+          origin: 'TO',
         }),
       });
-      if (!res.ok) throw new Error("Booking is niet bevestigt");
+      if (!res.ok) throw new Error('Booking is niet bevestigt');
       const data = await res.json();
-      if (data.Response === "False")
-        throw new Error("Booking is niet bevestigt");
+      if (data.Response === 'False')
+        throw new Error('Booking is niet bevestigt');
       return data;
     } catch (err) {
       //setError(err.message);

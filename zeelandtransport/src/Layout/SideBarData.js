@@ -1,24 +1,25 @@
-import React from "react";
-import * as IoIcons from "react-icons/io";
-import * as FcIcons from "react-icons/fc";
+import React from 'react';
+import * as IoIcons from 'react-icons/io';
+import * as MdIcons from 'react-icons/md';
+import * as FaIcons from 'react-icons/fa';
 
 export const SidebarData = [
   {
-    title: "Planning",
-    path: "/",
-    icon: <FcIcons.FcPlanner />,
-    cName: "nav-text",
+    title: 'Planning',
+    path: '/',
+    icon: <MdIcons.MdOutlineModeOfTravel />,
+    cName: 'nav-text',
   },
   {
-    title: "Mijn boekingen",
-    path: "/UserBookings",
+    title: 'Mijn boekingen',
+    path: '/UserBookings',
     icon: <IoIcons.IoIosPaper />,
-    cName: "nav-text",
+    cName: 'nav-text',
   },
   {
-    title: "Profiel",
-    path: "/EditUser",
-    icon: <FcIcons.FcPortraitMode />,
-    cName: "nav-text",
+    title: 'Profiel',
+    path: '/EditUser',
+    icon: <FaIcons.FaUser />,
+    cName: 'nav-text',
   },
 ];

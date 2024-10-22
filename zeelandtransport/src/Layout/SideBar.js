@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import * as FcIcons from "react-icons/fc";
-import * as AiIcons from "react-icons/ai";
-import { Link } from "react-router-dom";
-import { SidebarData } from "./SideBarData";
-import { IconContext } from "react-icons";
-import { UserIcon } from "../icons/Icons";
+import React, { useState } from 'react';
+import * as FiIcons from 'react-icons/fi';
+import * as AiIcons from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import { SidebarData } from './SideBarData';
+import { IconContext } from 'react-icons';
 
 function Sidebar() {
   const [sidebar, setSidebar] = useState(false);
@@ -13,27 +12,27 @@ function Sidebar() {
 
   return (
     <>
-      <IconContext.Provider value={{ color: "undefined" }}>
-        <div className="navbar">
-          <Link to="#" className="menu-bars">
-            <FcIcons.FcMenu onClick={showSidebar} />
+      <IconContext.Provider value={{ color: 'undefined' }}>
+        <div className='navbar'>
+          <Link to='#' className='menu-bars'>
+            <FiIcons.FiMenu onClick={showSidebar} />
           </Link>
-          <Link to={"/"}>
-            <div className="flex1 h1 text-align-center font-bold">
-              {" "}
+          <Link to={'/'}>
+            <div className='flex1 h1 text-align-center font-bold'>
+              {' '}
               FLEXITAXI
             </div>
           </Link>
           <div>
-            <Link to={"/EditUser"}>
-              <UserIcon width={"40px"} height={"40px"} color="color-primary" />
-            </Link>
+            {/* <Link to={'/EditUser'}>
+              <UserIcon width={'40px'} height={'40px'} color='color-primary' />
+            </Link> */}
           </div>
         </div>
-        <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
-          <ul className="nav-menu-items" onClick={showSidebar}>
-            <li className="navbar-toggle">
-              <Link to="#" className="menu-bars">
+        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+          <ul className='nav-menu-items' onClick={showSidebar}>
+            <li className='navbar-toggle'>
+              <Link to='#' className='menu-bars'>
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
