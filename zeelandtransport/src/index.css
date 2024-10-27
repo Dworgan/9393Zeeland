@@ -1,6 +1,7 @@
 @import "./css/cta.css";
 @import "./css/modal.css";
 @import "./css/feedback.css";
+@import "./css/sidebar.css";
 
 :root {
   --font-size-xl: 2.5rem; /*24px*/
@@ -103,6 +104,15 @@ body {
   line-height: var(--line-height-m);
   font-weight: 900;
 }
+.h4 {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-weight: 900;
+}
+
+.letter-spacing-m {
+  letter-spacing: 8px;
+}
 
 .font-bold {
   font-weight: 900;
@@ -124,7 +134,7 @@ body {
 
 .nav {
   display: flex;
-  column-gap: var(--space-l);
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -133,7 +143,7 @@ body {
 .label {
   font-size: var(--font-size-s);
   line-height: var(--line-height-base);
-  color: var(--color-neutral-7);
+  color: var(--color-neutral-6);
 }
 
 .loader {
@@ -261,13 +271,14 @@ body {
 }
 
 .card .default-detail {
+  font-size: var(--font-size-s);
   display: flex;
   gap: var(--space-base);
   align-items: center;
   background-color: var(--color-neutral-0);
   color: var(--color-neutral-8);
   transition: all 0.3s ease-in;
-  padding: var(--space-xs) 0;
+  padding: var(--space-s) 0;
   border-bottom: 1px solid var(--color-primary-40);
 }
 .card .default-detail:last-child {
@@ -281,7 +292,12 @@ body {
   font-weight: 600;
 }
 .card .default-detail .details > div:first-child {
-  max-width: 50px;
+  max-width: 60px;
+  width: 60px;
+}
+.card .default-detail .details.l > div:first-child {
+  max-width: 85px;
+  width: 85px;
 }
 .card .default-detail .details > div {
   flex: 1;

@@ -6,6 +6,7 @@ import BookingOptions from "./features/booking/BookingOptions";
 import BookingConfirmed from "./features/booking/BookingConfirmed";
 import { Route, Routes } from "react-router-dom";
 import UserEdit from "./features/user/UserEdit";
+import UserBookings from "./features/user/UserBookings";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           path="/BookingConfirmation"
           element={<BookingConfirmed />}
         ></Route>
+        <Route path="/UserBookings" element={<UserBookings />}></Route>
         <Route path="/EditUser" element={<UserEdit />}></Route>
       </Route>
     </Routes>

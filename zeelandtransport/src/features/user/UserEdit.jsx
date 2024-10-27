@@ -21,12 +21,15 @@ export default function UserEdit() {
     (state) => state.user.userInfo.phoneNumber
   );
 
-  useEffect(function () {
-    setVoornaam(initFirstName);
-    setAchternaam(initLastName);
-    setEmail(initEmail);
-    setPhoneNumber(initPhoneNumber);
-  }, []);
+  useEffect(
+    function () {
+      setVoornaam(initFirstName);
+      setAchternaam(initLastName);
+      setEmail(initEmail);
+      setPhoneNumber(initPhoneNumber);
+    },
+    [initFirstName, initLastName, initEmail, initPhoneNumber]
+  );
 
   function onSaveUserData() {
     dispatch(setUpdateUserInfo(voornaam, achternaam, email, phonenumber));
